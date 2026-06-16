@@ -366,8 +366,9 @@
   
   .refreshButton {
     position: fixed;
-    top: 18px;
-    right: 18px;
+    
+    top: calc(env(safe-area-inset-top) + 12px);
+    left: 18px;
   
     width: 42px;
     height: 42px;
