@@ -242,7 +242,7 @@ export default function Home() {
       {user && (
         <div className={styles.userBar}>
           <span>
-            👋 {user.email}
+            {user.email}
           </span>
 
           <button
