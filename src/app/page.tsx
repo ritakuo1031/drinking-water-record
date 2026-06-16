@@ -239,6 +239,13 @@ export default function Home() {
 
   return (
     <main className={styles.container}>
+      <button
+        className={styles.refreshButton}
+        onClick={() => window.location.reload()}
+        aria-label="重新整理"
+      >
+        ↻
+      </button>
       {user && (
         <div className={styles.userBar}>
           <span>

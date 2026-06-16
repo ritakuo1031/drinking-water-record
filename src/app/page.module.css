@@ -328,7 +328,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,.08);
   }
 
-  /* 登出按鈕 */
+  /* 登入帳號 */
   
   .userBar {
     width: 100%;
@@ -345,6 +345,8 @@
     font-weight: 600;
   }
   
+  /* 登出按鈕 */
+
   .logoutButton {
     border: none;
     cursor: pointer;
@@ -358,4 +360,37 @@
     border-radius: 999px;
   
     font-weight: 700;
+  }
+
+  /* 重新整理按鈕 */
+  
+  .refreshButton {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+  
+    width: 42px;
+    height: 42px;
+  
+    border: none;
+    border-radius: 50%;
+  
+    background: rgba(255,255,255,0.85);
+  
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.08);
+  
+    font-size: 24px;
+    font-weight: 600;
+  
+    color: #e36b9a;
+  
+    cursor: pointer;
+  
+    z-index: 999;
+  }
+  
+  .refreshButton:hover {
+    transform: rotate(180deg);
+    transition: 0.4s;
   }
