@@ -234,7 +234,7 @@ export default function Home() {
     await loadTodayWaterCount();
     await loadWeeklyTrend();
     
-    alert("喝水紀錄已新增！");
+    alert("喝水紀錄已新增！愛你唷～");
   };
 
   return (
