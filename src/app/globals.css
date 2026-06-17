@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --app-bg: #FDF1F5;
+  --card-bg: #fffdf8;
+  --primary-pink: #E36B9A;
+  --text-brown: #9c836c;
 }
 
 @theme inline {
