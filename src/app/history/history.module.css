@@ -62,14 +62,23 @@
   
   .dateInput {
     border: 2px solid #f3dce6;
-  
     border-radius: 14px;
-  
     padding: 12px 16px;
   
-    font-size: 16px;
-  
     background: white;
+    
+    font-size: 16px;
+    font-weight: 600;
+    
+    color: #9c836c;
+  }
+
+  .dateInput::-webkit-datetime-edit {
+    color: #9c836c;
+  }
+  
+  .dateInput::-webkit-calendar-picker-indicator {
+    opacity: 0.8;
   }
   
   .placeholderCard {
@@ -85,8 +94,12 @@
     justify-content: center;
     align-items: center;
   
-    color: #a58b77;
+    color: #9c836c;
   
     box-shadow:
       0 10px 30px rgba(0,0,0,.05);
+  }
+
+  .dateInput::placeholder {
+    color: #9c836c;
   }
