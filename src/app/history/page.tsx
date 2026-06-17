@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./history.module.css";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -23,66 +24,66 @@ export default function HistoryPage() {
     useState(defaultEndDate);
 
   return (
-    <main
-      style={{
-        maxWidth: "1000px",
-        margin: "0 auto",
-        padding: "24px",
-      }}
-    >
-      {/* 回首頁 */}
-
-      <Link href="/">
-        ← 回首頁
-      </Link>
-
-      {/* 日期篩選 */}
-
-      <div
-        style={{
-          marginTop: "24px",
-          display: "flex",
-          gap: "16px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <div>開始日期</div>
-
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) =>
-              setStartDate(
-                e.target.value
-              )
-            }
-          />
+    <main className={styles.page}>
+      <div className={styles.container}>
+  
+        <Link
+          href="/"
+          className={styles.backButton}
+        >
+          ← 回首頁
+        </Link>
+  
+        <div className={styles.filterCard}>
+          <div className={styles.filterTitle}>
+            日期篩選
+          </div>
+  
+          <div className={styles.filterRow}>
+            <div className={styles.dateGroup}>
+              <label
+                className={styles.dateLabel}
+              >
+                開始日期
+              </label>
+  
+              <input
+                type="date"
+                value={startDate}
+                className={styles.dateInput}
+                onChange={(e) =>
+                  setStartDate(
+                    e.target.value
+                  )
+                }
+              />
+            </div>
+  
+            <div className={styles.dateGroup}>
+              <label
+                className={styles.dateLabel}
+              >
+                結束日期
+              </label>
+  
+              <input
+                type="date"
+                value={endDate}
+                className={styles.dateInput}
+                onChange={(e) =>
+                  setEndDate(
+                    e.target.value
+                  )
+                }
+              />
+            </div>
+          </div>
         </div>
-
-        <div>
-          <div>結束日期</div>
-
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) =>
-              setEndDate(
-                e.target.value
-              )
-            }
-          />
+  
+        <div className={styles.placeholderCard}>
+          第一個圖表區塊（喝水時間分布）
         </div>
-      </div>
-
-      {/* 之後放圖表 */}
-
-      <div
-        style={{
-          marginTop: "40px",
-        }}
-      >
-        歷史資料區
+  
       </div>
     </main>
   );
