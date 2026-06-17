@@ -1,8 +1,11 @@
 "use client";
 
-import styles from "./history.module.css";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useState } from "react";
+
+import { supabase } from "@/lib/supabase";
+
+import styles from "./history.module.css";
 
 export default function HistoryPage() {
   const today = new Date();
@@ -22,6 +25,41 @@ export default function HistoryPage() {
 
   const [endDate, setEndDate] =
     useState(defaultEndDate);
+
+  const [waterLogs, setWaterLogs] = useState<any[]>([]);
+
+  const loadWaterLogs = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+  
+    if (!user) return;
+  
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+  
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+  
+    const { data, error } = await supabase
+      .from("water_logs")
+      .select("*")
+      .eq("user_id", user.id)
+      .gte("created_at", start.toISOString())
+      .lte("created_at", end.toISOString())
+      .order("created_at", { ascending: false });
+  
+    if (error) {
+      console.error(error);
+      return;
+    }
+  
+    setWaterLogs(data ?? []);
+  };
+
+  useEffect(() => {
+    loadWaterLogs();
+  }, [startDate, endDate]);
 
   return (
     <main className={styles.page}>
@@ -92,6 +130,42 @@ export default function HistoryPage() {
   
         <div className={styles.placeholderCard}>
           第一個圖表區塊（喝水時間分布）
+        </div>
+
+        <div className={styles.tableCard}>
+          <h2 className={styles.cardTitle}>
+            喝水時間紀錄
+          </h2>
+
+          <div className={styles.tableContainer}>
+            {waterLogs.length === 0 ? (
+              <div className={styles.emptyText}>
+                此日期區間沒有資料
+              </div>
+            ) : (
+              waterLogs.map((log) => (
+                <div
+                  key={log.id}
+                  className={styles.tableRow}
+                >
+                  <span>
+                    {new Date(
+                      log.created_at
+                    ).toLocaleDateString("zh-TW")}
+                  </span>
+
+                  <span>
+                    {new Date(
+                      log.created_at
+                    ).toLocaleTimeString("zh-TW", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
   
       </div>
