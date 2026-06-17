@@ -103,3 +103,38 @@
   .dateInput::placeholder {
     color: #9c836c;
   }
+
+  .topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    margin-bottom: 24px;
+  }
+
+  .refreshButton {
+    width: 42px;
+    height: 42px;
+  
+    border: none;
+    border-radius: 50%;
+  
+    background: rgba(255,255,255,0.85);
+  
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.08);
+  
+    font-size: 24px;
+    font-weight: 600;
+  
+    color: #e36b9a;
+  
+    cursor: pointer;
+  
+    flex-shrink: 0;
+  }
+  
+  .refreshButton:hover {
+    transform: rotate(180deg);
+    transition: 0.4s;
+  }

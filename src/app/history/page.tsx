@@ -26,13 +26,23 @@ export default function HistoryPage() {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
-  
-        <Link
-          href="/"
-          className={styles.backButton}
-        >
-          ← 回首頁
-        </Link>
+        
+        <div className={styles.topBar}>
+          <Link
+            href="/"
+            className={styles.backButton}
+          >
+            ← 回首頁
+          </Link>
+
+          <button
+            className={styles.refreshButton}
+            onClick={() => window.location.reload()}
+            aria-label="重新整理"
+          >
+            ↻
+          </button>
+        </div>
   
         <div className={styles.filterCard}>
           <div className={styles.filterTitle}>
