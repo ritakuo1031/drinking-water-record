@@ -140,7 +140,7 @@ export default function HistoryPage() {
           <div className={styles.tableContainer}>
             {waterLogs.length === 0 ? (
               <div className={styles.emptyText}>
-                此日期區間沒有資料
+                此日期區間無資料
               </div>
             ) : (
               waterLogs.map((log) => (
