@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-  const [showDateFilter, setShowDateFilter] =
-    useState(false);
 
 import Link from "next/link";
 
@@ -11,6 +9,9 @@ import { supabase } from "@/lib/supabase";
 import styles from "./history.module.css";
 
 export default function HistoryPage() {
+  const [showDateFilter, setShowDateFilter] =
+  useState(false);
+
   const today = new Date();
 
   const defaultEndDate = today
