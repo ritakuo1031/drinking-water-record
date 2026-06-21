@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+  const [showDateFilter, setShowDateFilter] =
+    useState(false);
+
 import Link from "next/link";
 
 import { supabase } from "@/lib/supabase";
@@ -86,46 +89,67 @@ export default function HistoryPage() {
           <div className={styles.filterTitle}>
             日期篩選
           </div>
-  
-          <div className={styles.filterRow}>
-            <div className={styles.dateGroup}>
-              <label
-                className={styles.dateLabel}
-              >
-                開始日期
-              </label>
-  
-              <input
-                type="date"
-                value={startDate}
-                className={styles.dateInput}
-                onChange={(e) =>
-                  setStartDate(
-                    e.target.value
-                  )
-                }
-              />
+
+          <button
+            className={styles.dateSummary}
+            onClick={() =>
+              setShowDateFilter(
+                !showDateFilter
+              )
+            }
+          >
+            📅 {startDate.replaceAll("-", "/")}
+            ~
+            {endDate.replaceAll("-", "/")}
+
+            <span>
+              {showDateFilter
+                ? "▲"
+                : "▼"}
+            </span>
+          </button>
+
+          {showDateFilter && (
+            <div className={styles.filterRow}>
+              <div className={styles.dateGroup}>
+                <label
+                  className={styles.dateLabel}
+                >
+                  開始日期
+                </label>
+
+                <input
+                  type="date"
+                  value={startDate}
+                  className={styles.dateInput}
+                  onChange={(e) =>
+                    setStartDate(
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className={styles.dateGroup}>
+                <label
+                  className={styles.dateLabel}
+                >
+                  結束日期
+                </label>
+
+                <input
+                  type="date"
+                  value={endDate}
+                  className={styles.dateInput}
+                  onChange={(e) =>
+                    setEndDate(
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
             </div>
-  
-            <div className={styles.dateGroup}>
-              <label
-                className={styles.dateLabel}
-              >
-                結束日期
-              </label>
-  
-              <input
-                type="date"
-                value={endDate}
-                className={styles.dateInput}
-                onChange={(e) =>
-                  setEndDate(
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-          </div>
+          )}
         </div>
   
         <div className={styles.placeholderCard}>

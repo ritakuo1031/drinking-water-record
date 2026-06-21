@@ -361,7 +361,7 @@
   .logoutButton {
     position: absolute;
 
-    top: calc(env(safe-area-inset-top) + 12px);
+    top: calc(env(safe-area-inset-top) + 18px);
     right: 18px;
 
     width: 72px;
@@ -393,7 +393,7 @@
   .refreshButton {
     position: fixed;
     
-    top: calc(env(safe-area-inset-top) + 12px);
+    top: calc(env(safe-area-inset-top) + 18px);
     left: 18px;
   
     width: 42px;

@@ -47,8 +47,12 @@
   
   .filterRow {
     display: flex;
+  
+    flex-direction: column;
+  
     gap: 24px;
-    flex-wrap: wrap;
+  
+    margin-top: 24px;
   }
 
   .dateGroup {
@@ -105,6 +109,40 @@
   .dateInput::placeholder {
     color: #9c836c;
   }
+
+  .dateSummary {
+    width: 100%;
+  
+    margin-top: 20px;
+  
+    padding: 18px 22px;
+  
+    border: none;
+  
+    border-radius: 20px;
+  
+    background: #ffffff;
+  
+    color: #a58b77;
+  
+    font-size: 26px;
+  
+    font-weight: 700;
+  
+    display: flex;
+  
+    justify-content: space-between;
+  
+    align-items: center;
+  
+    cursor: pointer;
+  
+    box-shadow:
+      0 4px 12px
+      rgba(0,0,0,0.05);
+  }
+
+  /* 重新整理按鈕 */
 
   .topBar {
     display: flex;
@@ -185,7 +223,7 @@
   
     color: #9c836c;
   
-    font-size: 20px;
+    font-size: 18px;
   
     font-weight: 600;
   }
