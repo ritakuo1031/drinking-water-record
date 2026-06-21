@@ -99,7 +99,7 @@ export default function HistoryPage() {
               )
             }
           >
-            📅 {startDate.replaceAll("-", "/")}
+            {startDate.replaceAll("-", "/")}
             ~
             {endDate.replaceAll("-", "/")}
 
