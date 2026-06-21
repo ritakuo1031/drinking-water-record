@@ -265,6 +265,19 @@
     margin-top: 6px;
   }
 
+  .chartScroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chartInner {
+    min-width: 520px;
+    height: 320px;
+  }
+
   /* 目標標籤 */
 
   .goalLabel {

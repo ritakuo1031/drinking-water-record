@@ -336,10 +336,12 @@ export default function Home() {
     <div className={styles.chartUnit}>
       單位：杯
     </div>
-  <ResponsiveContainer
+  <div className={styles.chartScroll}>
+    <div className={styles.chartInner}>
+    <ResponsiveContainer
     width="100%"
-    height={360}
-  >
+    height={320}
+    >
     <BarChart
       data={weeklyData}
       margin={{
@@ -427,7 +429,7 @@ export default function Home() {
                   ? "#e36b9a"
                   : "#a58b77"
               }
-              fontSize="14"
+              fontSize="16"
               fontWeight={
                 current?.isToday
                   ? "800"
@@ -438,7 +440,7 @@ export default function Home() {
                 {lines[0]}
               </tspan>
 
-              <tspan x={Number(x)} dy="16">
+              <tspan x={Number(x)} dy="20">
                 {lines[1]}
               </tspan>
             </text>
@@ -516,7 +518,9 @@ export default function Home() {
         />
       </Bar>
     </BarChart>
-  </ResponsiveContainer>
+    </ResponsiveContainer>
+    </div>
+  </div>
   </div>
 
   <div className={styles.goalLabel}>
