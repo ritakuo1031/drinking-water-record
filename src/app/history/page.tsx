@@ -100,7 +100,7 @@ export default function HistoryPage() {
             }
           >
             {startDate.replaceAll("-", "/")}
-            ~
+            ～
             {endDate.replaceAll("-", "/")}
 
             <span>
