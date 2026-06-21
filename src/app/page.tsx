@@ -427,7 +427,7 @@ export default function Home() {
                   ? "#e36b9a"
                   : "#a58b77"
               }
-              fontSize="12"
+              fontSize="14"
               fontWeight={
                 current?.isToday
                   ? "800"
@@ -438,7 +438,7 @@ export default function Home() {
                 {lines[0]}
               </tspan>
 
-              <tspan x={Number(x)} dy="13">
+              <tspan x={Number(x)} dy="16">
                 {lines[1]}
               </tspan>
             </text>
@@ -484,6 +484,7 @@ export default function Home() {
             const {
               x,
               y,
+              width,
               value,
               fill,
             } = props;
@@ -497,7 +498,7 @@ export default function Home() {
 
             return (
               <text
-                x={Number(x) + 26}
+                x={Number(x) + Number(width) / 2}
                 y={Number(y) - 8}
                 textAnchor="middle"
                 fontSize="18"
