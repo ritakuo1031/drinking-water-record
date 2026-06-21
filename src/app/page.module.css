@@ -350,7 +350,6 @@
     max-width: 620px;
   
     margin-bottom: 20px;
-    left: 48px;
 
     color: #a58b77;
     font-size: 20px;
@@ -394,7 +393,7 @@
   .refreshButton {
     position: fixed;
     
-    top: calc(env(safe-area-inset-top) + 18px);
+    top: calc(env(safe-area-inset-top) + 60px);
     left: 18px;
   
     width: 42px;
