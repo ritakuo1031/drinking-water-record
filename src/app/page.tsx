@@ -249,7 +249,10 @@ export default function Home() {
       {user && (
         <div className={styles.userBar}>
           <span>
-            {user.email}
+            🌸{" "}
+            {user.user_metadata?.full_name ??
+              user.user_metadata?.name ??
+              user.email}
           </span>
 
           <button
@@ -261,7 +264,7 @@ export default function Home() {
         </div>
       )}
   <p className={styles.todayLabel}>
-  ＼＼ 今天已經喝了 ／／
+  ＼ 今天已經喝了 ／
   </p>
 
   <div className={styles.countBlock}>
@@ -424,7 +427,7 @@ export default function Home() {
                   ? "#e36b9a"
                   : "#a58b77"
               }
-              fontSize="16"
+              fontSize="12"
               fontWeight={
                 current?.isToday
                   ? "800"
@@ -435,7 +438,7 @@ export default function Home() {
                 {lines[0]}
               </tspan>
 
-              <tspan x={Number(x)} dy="18">
+              <tspan x={Number(x)} dy="14">
                 {lines[1]}
               </tspan>
             </text>
