@@ -100,7 +100,7 @@ export default function HistoryPage() {
             }
           >
             {startDate.replaceAll("-", "/")}
-            ～
+            {" "}～{" "}
             {endDate.replaceAll("-", "/")}
 
             <span>
@@ -174,9 +174,20 @@ export default function HistoryPage() {
                   className={styles.tableRow}
                 >
                   <span>
-                    {new Date(
-                      log.created_at
-                    ).toLocaleDateString("zh-TW")}
+                    {
+                      new Intl.DateTimeFormat(
+                        "zh-TW",
+                        {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        }
+                      )
+                        .format(
+                          new Date(log.created_at)
+                        )
+                        .replaceAll("-", "/")
+                    }
                   </span>
 
                   <span>
