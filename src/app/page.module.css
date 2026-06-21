@@ -1,4 +1,6 @@
 .container {
+    position: relative;
+
     min-height: 100vh;
     background: #fdf1f5;
   
@@ -347,10 +349,6 @@
     width: 100%;
     max-width: 620px;
   
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  
     margin-bottom: 20px;
   
     color: #a58b77;
@@ -361,6 +359,14 @@
   /* 登出按鈕 */
 
   .logoutButton {
+    position: absolute;
+
+    top: calc(env(safe-area-inset-top) + 12px);
+    right: 18px;
+
+    width: 72px;
+    height: 42px;
+    
     border: none;
     cursor: pointer;
   
@@ -372,7 +378,14 @@
   
     border-radius: 999px;
   
+    font-size: 20px;
+    
     font-weight: 700;
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
+
+    z-index: 999;
   }
 
   /* 重新整理按鈕 */
