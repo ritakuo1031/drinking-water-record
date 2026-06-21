@@ -440,7 +440,7 @@ export default function Home() {
                 {lines[0]}
               </tspan>
 
-              <tspan x={Number(x)} dy="20">
+              <tspan x={Number(x)} dy="16">
                 {lines[1]}
               </tspan>
             </text>
