@@ -361,7 +361,7 @@ export default function HistoryPage() {
                       const current =
                         dailyCounts.find(
                           (item) =>
-                            item.date === payload.value
+                            item.displayDate === payload.value
                         );
 
                       return (
@@ -442,18 +442,6 @@ export default function HistoryPage() {
                         const item =
                           dailyCounts?.[index];
 
-                        const today = new Date();
-
-                        const todayKey =
-                          `${today.getFullYear()}/${String(
-                            today.getMonth() + 1
-                          ).padStart(2, "0")}/${String(
-                            today.getDate()
-                          ).padStart(2, "0")}`;
-
-                        const isToday =
-                          item?.date === todayKey;
-
                         if (value === 0) {
                           return null;
                         }
@@ -469,7 +457,7 @@ export default function HistoryPage() {
                             fontSize="18"
                             fontWeight="700"
                             fill={
-                              isToday
+                              item?.isToday
                                 ? "#e36b9a"
                                 : "#6da9e8"
                             }
