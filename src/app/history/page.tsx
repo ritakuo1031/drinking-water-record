@@ -289,7 +289,7 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: 40,
+                    left: 20,
                     bottom: 10,
                   }}
                 >
@@ -367,7 +367,7 @@ export default function HistoryPage() {
                       return (
                         <text
                           x={Number(x)}
-                          y={Number(y) + 15}
+                          y={Number(y) + 10}
                           textAnchor="middle"
 
                           fill={
@@ -376,7 +376,7 @@ export default function HistoryPage() {
                               : "#a58b77"
                           }
 
-                          fontSize="12"
+                          fontSize="16"
 
                           fontWeight={
                             current?.isToday
@@ -393,7 +393,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
-                    width={45}
+                    width={35}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
