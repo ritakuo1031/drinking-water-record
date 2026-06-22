@@ -289,8 +289,8 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: 0,
-                    bottom: 0,
+                    left: -10,
+                    bottom: -10,
                   }}
                 >
                   <defs>
@@ -393,7 +393,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
-                    width={30}
+                    width={25}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
@@ -431,7 +431,6 @@ export default function HistoryPage() {
                     <LabelList
                       dataKey="count"
                       content={(props: any) => {
-                        console.log(props);
                         const {
                           x,
                           y,
