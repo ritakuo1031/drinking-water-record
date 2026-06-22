@@ -289,8 +289,8 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: 10,
-                    bottom: 10,
+                    left: 5,
+                    bottom: 5,
                   }}
                 >
                   <defs>
@@ -436,11 +436,10 @@ export default function HistoryPage() {
                           y,
                           width,
                           value,
-                          index,
+                          payload,
                         } = props;
 
-                        const item =
-                          dailyCounts?.[index];
+                        const item = payload;
 
                         if (value === 0) {
                           return null;
