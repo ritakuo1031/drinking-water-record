@@ -184,11 +184,13 @@
   .chartCard {
     background: #fffdf8;
   
-    border-radius: 40px;
+    border-radius: 32px;
   
     padding: 28px;
   
     margin-top: 24px;
+
+    overflow: hidden;
   }
   
   .cardTitle {
@@ -211,6 +213,12 @@
   
   .chartScroll {
     overflow-x: auto;
+
+    background: #ffffff;
+
+    border-radius: 32px;
+
+    padding: 24px;
   
     overflow-y: hidden;
   
@@ -228,13 +236,7 @@
   }
 
   .chartInner {
-    background: white;
-  
-    border-radius: 28px;
-  
-    padding: 20px;
-  
-    margin-top: 16px;
+    min-height: 320px;
   }
 
   /* 喝水時間紀錄表格 */

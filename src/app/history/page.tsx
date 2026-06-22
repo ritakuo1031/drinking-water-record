@@ -133,9 +133,17 @@ export default function HistoryPage() {
 
       result.push({
         date: key,
-
+      
+        displayDate:
+          `${String(
+            current.getMonth() + 1
+          ).padStart(2, "0")}/` +
+          `${String(
+            current.getDate()
+          ).padStart(2, "0")}`,
+      
         count: counts[key] || 0,
-
+      
         isToday: key === todayKey,
       });
 
@@ -265,8 +273,8 @@ export default function HistoryPage() {
             <div
               style={{
                 width: `${Math.max(
-                  dailyCounts.length * 80,
-                  600
+                  dailyCounts.length * 70,
+                  650
                 )}px`,
                 height: "320px",
               }}
@@ -281,7 +289,7 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: -25,
+                    left: 40,
                     bottom: 10,
                   }}
                 >
@@ -346,7 +354,7 @@ export default function HistoryPage() {
                   />
 
                   <XAxis
-                    dataKey="date"
+                    dataKey="displayDate"
                     interval={0}
                     height={40}
                     tick={({ x, y, payload }) => {
@@ -361,12 +369,15 @@ export default function HistoryPage() {
                           x={Number(x)}
                           y={Number(y) + 15}
                           textAnchor="middle"
+
                           fill={
                             current?.isToday
                               ? "#e36b9a"
                               : "#a58b77"
                           }
+
                           fontSize="12"
+
                           fontWeight={
                             current?.isToday
                               ? "800"
@@ -382,7 +393,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
-                    width={35}
+                    width={45}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
