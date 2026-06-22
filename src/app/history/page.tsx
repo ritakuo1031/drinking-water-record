@@ -2,6 +2,17 @@
 
 import { useState, useEffect } from "react";
 
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Cell,
+  LabelList,
+} from "recharts";
+
 import Link from "next/link";
 
 import { supabase } from "@/lib/supabase";
@@ -32,6 +43,9 @@ export default function HistoryPage() {
 
   const [waterLogs, setWaterLogs] = useState<any[]>([]);
 
+  const [dailyCounts, setDailyCounts] =
+    useState<any[]>([]);
+
   const loadWaterLogs = async () => {
     const {
       data: { user },
@@ -58,7 +72,65 @@ export default function HistoryPage() {
       return;
     }
   
-    setWaterLogs(data ?? []);
+    const logs = data ?? [];
+
+    setWaterLogs(logs);
+
+    buildDailyCounts(logs);
+  };
+
+  const buildDailyCounts = (
+    logs: any[]
+  ) => {
+    const counts: Record<
+      string,
+      number
+    > = {};
+  
+    logs.forEach((log) => {
+      const date = new Date(
+        log.created_at
+      );
+  
+      const key =
+        `${date.getFullYear()}/` +
+        `${String(
+          date.getMonth() + 1
+        ).padStart(2, "0")}/` +
+        `${String(
+          date.getDate()
+        ).padStart(2, "0")}`;
+  
+      counts[key] =
+        (counts[key] || 0) + 1;
+    });
+  
+    const result = [];
+  
+    const current = new Date(startDate);
+    const end = new Date(endDate);
+  
+    while (current <= end) {
+      const key =
+        `${current.getFullYear()}/` +
+        `${String(
+          current.getMonth() + 1
+        ).padStart(2, "0")}/` +
+        `${String(
+          current.getDate()
+        ).padStart(2, "0")}`;
+  
+      result.push({
+        date: key,
+        count: counts[key] || 0,
+      });
+  
+      current.setDate(
+        current.getDate() + 1
+      );
+    }
+  
+    setDailyCounts(result);
   };
 
   useEffect(() => {
@@ -155,6 +227,179 @@ export default function HistoryPage() {
   
         <div className={styles.placeholderCard}>
           第一個圖表區塊（喝水時間分布）
+        </div>
+
+        <div className={styles.chartCard}>
+          <h2 className={styles.cardTitle}>
+            每日喝水杯數
+          </h2>
+
+          <div className={styles.chartSubTitle}>
+            單位：杯
+          </div>
+
+          <div className={styles.chartScroll}>
+            <div
+              style={{
+                width: `${Math.max(
+                  dailyCounts.length * 80,
+                  600
+                )}px`,
+                height: "320px",
+              }}
+            >
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
+                <BarChart
+                  data={dailyCounts.map(
+                    (item) => ({
+                      ...item,
+                      isToday:
+                        item.date ===
+                        `${new Date().getFullYear()}/${String(
+                          new Date().getMonth() + 1
+                        ).padStart(
+                          2,
+                          "0"
+                        )}/${String(
+                          new Date().getDate()
+                        ).padStart(
+                          2,
+                          "0"
+                        )}`,
+                    })
+                  )}
+                >
+                  <defs>
+                    <linearGradient
+                      id="historyBarGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="#b8d9fb"
+                      />
+
+                      <stop
+                        offset="100%"
+                        stopColor="#84b8f0"
+                      />
+                    </linearGradient>
+
+                    <linearGradient
+                      id="historyTodayGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="#f19bbb"
+                      />
+
+                      <stop
+                        offset="100%"
+                        stopColor="#e36b9a"
+                      />
+                    </linearGradient>
+                  </defs>
+
+                  <CartesianGrid
+                    stroke="#f6cfd8"
+                    strokeDasharray="6 6"
+                    vertical={false}
+                  />
+
+                  <XAxis
+                    dataKey="date"
+                    interval={0}
+                    angle={-30}
+                    textAnchor="end"
+                    height={70}
+                    tick={{
+                      fill: "#a58b77",
+                      fontSize: 16,
+                    }}
+                  />
+
+                  <YAxis
+                    domain={[0, 8]}
+                    ticks={[
+                      0,
+                      2,
+                      4,
+                      6,
+                      8,
+                    ]}
+                    tick={{
+                      fill: "#a58b77",
+                      fontSize: 18,
+                      fontWeight: 600,
+                    }}
+                  />
+
+                  <Bar
+                    dataKey="count"
+                    radius={[
+                      12,
+                      12,
+                      0,
+                      0,
+                    ]}
+                  >
+                    {dailyCounts.map(
+                      (
+                        item,
+                        index
+                      ) => {
+                        const today =
+                          `${new Date().getFullYear()}/${String(
+                            new Date().getMonth() +
+                              1
+                          ).padStart(
+                            2,
+                            "0"
+                          )}/${String(
+                            new Date().getDate()
+                          ).padStart(
+                            2,
+                            "0"
+                          )}`;
+
+                        return (
+                          <Cell
+                            key={index}
+                            fill={
+                              item.date ===
+                              today
+                                ? "url(#historyTodayGradient)"
+                                : "url(#historyBarGradient)"
+                            }
+                          />
+                        );
+                      }
+                    )}
+
+                    <LabelList
+                      dataKey="count"
+                      position="top"
+                      style={{
+                        fill: "#6da9e8",
+                        fontWeight: 700,
+                        fontSize: 18,
+                      }}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
 
         <div className={styles.tableCard}>

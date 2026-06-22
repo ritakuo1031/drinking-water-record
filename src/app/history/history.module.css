@@ -179,6 +179,54 @@
     transition: 0.4s;
   }
 
+  /* 每日喝水杯數長條圖 */
+
+  .chartCard {
+    background: #fffdf8;
+  
+    border-radius: 40px;
+  
+    padding: 28px;
+  
+    margin-top: 24px;
+  }
+  
+  .cardTitle {
+    font-size: 24px;
+  
+    color: #e36b9a;
+  
+    font-weight: 700;
+  
+    margin-bottom: 12px;
+  }
+  
+  .chartSubTitle {
+    font-size: 18px;
+  
+    color: #a58b77;
+  
+    margin-bottom: 12px;
+  }
+  
+  .chartScroll {
+    overflow-x: auto;
+  
+    overflow-y: hidden;
+  
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .chartScroll::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .chartScroll::-webkit-scrollbar-thumb {
+    background: #e3c2cf;
+  
+    border-radius: 999px;
+  }
+
   /* 喝水時間紀錄表格 */
 
   .tableCard {

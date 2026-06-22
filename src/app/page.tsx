@@ -26,14 +26,14 @@ export default function Home() {
   const [weeklyData, setWeeklyData] =
     useState<WeeklyDataItem[]>([]);
   const [user, setUser] = useState<any>(null);
-  const target = 8;
+  const DAILY_WATER_TARGET = 7;
 
   const displayCount = user
     ? count
     : 0;
 
   const progress = Math.min(
-    (displayCount / target) * 100,
+    (displayCount / DAILY_WATER_TARGET) * 100,
     100
   );
   const loadTodayWaterCount = async () => {
@@ -100,7 +100,10 @@ export default function Home() {
   
     const result = [];
   
-    for (let i = 6; i >= 0; i--) {
+    const daysToShow = 8;
+
+    for (let i = daysToShow - 1; i >= 0; i--) {
+
       const day = new Date();
   
       day.setDate(day.getDate() - i);
@@ -296,7 +299,7 @@ export default function Home() {
     </div>
 
     <div className={styles.goalNumber}>
-      {target}
+      {DAILY_WATER_TARGET}
       <span className={styles.goalUnit}>
         杯水
       </span>
@@ -317,7 +320,7 @@ export default function Home() {
       </span>
 
       <span>
-        目標 {target} 杯
+        目標 {DAILY_WATER_TARGET} 杯
       </span>
     </div>
 
@@ -526,7 +529,7 @@ export default function Home() {
   <div className={styles.goalLabel}>
     目標{" "}
     <span className={styles.goalHighlight}>
-      8
+      {DAILY_WATER_TARGET}
     </span>
     杯 / 天
   </div>
