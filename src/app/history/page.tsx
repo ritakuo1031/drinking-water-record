@@ -289,7 +289,7 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: 20,
+                    left: 10,
                     bottom: 10,
                   }}
                 >
@@ -393,7 +393,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
-                    width={35}
+                    width={30}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
