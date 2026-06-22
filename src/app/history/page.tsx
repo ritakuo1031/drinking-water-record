@@ -393,7 +393,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
-                    width={25}
+                    width={30}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
