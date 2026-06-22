@@ -273,8 +273,8 @@ export default function HistoryPage() {
             <div
               style={{
                 width: `${Math.max(
-                  dailyCounts.length * 70,
-                  650
+                  dailyCounts.length * 55,
+                  500
                 )}px`,
                 height: "320px",
               }}
@@ -403,6 +403,7 @@ export default function HistoryPage() {
 
                   <Bar
                     dataKey="count"
+                    barSize={36}
                     radius={[
                       12,
                       12,
