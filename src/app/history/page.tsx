@@ -289,8 +289,8 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: 5,
-                    bottom: 5,
+                    left: 0,
+                    bottom: 0,
                   }}
                 >
                   <defs>
@@ -431,19 +431,22 @@ export default function HistoryPage() {
                     <LabelList
                       dataKey="count"
                       content={(props: any) => {
+                        console.log(props);
                         const {
                           x,
                           y,
                           width,
                           value,
-                          payload,
+                          fill,
                         } = props;
 
-                        const item = payload;
-
-                        if (value === 0) {
+                        if (Number(value) === 0) {
                           return null;
                         }
+
+                        const isToday =
+                          fill ===
+                          "url(#historyTodayGradient)";
 
                         return (
                           <text
@@ -451,12 +454,12 @@ export default function HistoryPage() {
                               Number(x) +
                               Number(width) / 2
                             }
-                            y={Number(y) - 10}
+                            y={Number(y) - 8}
                             textAnchor="middle"
                             fontSize="18"
                             fontWeight="700"
                             fill={
-                              item?.isToday
+                              isToday
                                 ? "#e36b9a"
                                 : "#6da9e8"
                             }
