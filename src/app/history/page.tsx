@@ -289,7 +289,7 @@ export default function HistoryPage() {
                   margin={{
                     top: 20,
                     right: 10,
-                    left: -10,
+                    left: 0,
                     bottom: -10,
                   }}
                 >
