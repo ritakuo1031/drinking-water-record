@@ -278,6 +278,12 @@ export default function HistoryPage() {
                 >
                 <BarChart
                   data={dailyCounts}
+                  margin={{
+                    top: 20,
+                    right: 10,
+                    left: -25,
+                    bottom: 10,
+                  }}
                 >
                   <defs>
                     <linearGradient
@@ -342,16 +348,14 @@ export default function HistoryPage() {
                   <XAxis
                     dataKey="date"
                     interval={0}
-                    angle={-30}
-                    textAnchor="end"
-                    height={70}
+                    height={40}
                     tick={({ x, y, payload }) => {
                       const current =
                         dailyCounts.find(
                           (item) =>
                             item.date === payload.value
                         );
-                    
+
                       return (
                         <text
                           x={Number(x)}
@@ -378,6 +382,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
+                    width={35}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
@@ -426,6 +431,18 @@ export default function HistoryPage() {
                         const item =
                           dailyCounts?.[index];
 
+                        const today = new Date();
+
+                        const todayKey =
+                          `${today.getFullYear()}/${String(
+                            today.getMonth() + 1
+                          ).padStart(2, "0")}/${String(
+                            today.getDate()
+                          ).padStart(2, "0")}`;
+
+                        const isToday =
+                          item?.date === todayKey;
+
                         if (value === 0) {
                           return null;
                         }
@@ -441,7 +458,7 @@ export default function HistoryPage() {
                             fontSize="18"
                             fontWeight="700"
                             fill={
-                              item?.isToday
+                              isToday
                                 ? "#e36b9a"
                                 : "#6da9e8"
                             }
