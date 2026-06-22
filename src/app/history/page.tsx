@@ -388,11 +388,44 @@ export default function HistoryPage() {
 
                     <LabelList
                       dataKey="count"
-                      position="top"
-                      style={{
-                        fill: "#6da9e8",
-                        fontWeight: 700,
-                        fontSize: 18,
+                      content={(props: any) => {
+                        const {
+                          x,
+                          y,
+                          width,
+                          value,
+                          index,
+                        } = props;
+
+                        const item =
+                          dailyCounts[index];
+
+                        const today =
+                          `${new Date().getFullYear()}/${String(
+                            new Date().getMonth() + 1
+                          ).padStart(2, "0")}/${String(
+                            new Date().getDate()
+                          ).padStart(2, "0")}`;
+
+                        return (
+                          <text
+                            x={
+                              Number(x) +
+                              Number(width) / 2
+                            }
+                            y={Number(y) - 8}
+                            textAnchor="middle"
+                            fontSize="18"
+                            fontWeight="700"
+                            fill={
+                              item.date === today
+                                ? "#e36b9a"
+                                : "#6da9e8"
+                            }
+                          >
+                            {value}
+                          </text>
+                        );
                       }}
                     />
                   </Bar>
