@@ -227,6 +227,16 @@
     border-radius: 999px;
   }
 
+  .chartInner {
+    background: white;
+  
+    border-radius: 28px;
+  
+    padding: 20px;
+  
+    margin-top: 16px;
+  }
+
   /* 喝水時間紀錄表格 */
 
   .tableCard {

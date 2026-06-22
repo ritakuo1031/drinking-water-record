@@ -106,10 +106,21 @@ export default function HistoryPage() {
     });
   
     const result = [];
-  
+
     const current = new Date(startDate);
     const end = new Date(endDate);
-  
+
+    const today = new Date();
+
+    const todayKey =
+      `${today.getFullYear()}/` +
+      `${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}/` +
+      `${String(
+        today.getDate()
+      ).padStart(2, "0")}`;
+
     while (current <= end) {
       const key =
         `${current.getFullYear()}/` +
@@ -119,23 +130,35 @@ export default function HistoryPage() {
         `${String(
           current.getDate()
         ).padStart(2, "0")}`;
-  
+
       result.push({
         date: key,
+
         count: counts[key] || 0,
+
+        isToday: key === todayKey,
       });
-  
+
       current.setDate(
         current.getDate() + 1
       );
     }
-  
+
     setDailyCounts(result);
-  };
+
+  };  
 
   useEffect(() => {
     loadWaterLogs();
   }, [startDate, endDate]);
+
+  const maxCount = Math.max(
+    ...dailyCounts.map(item => item.count),
+    8
+  );
+  
+  const yAxisMax =
+    Math.ceil((maxCount + 1) / 2) * 2;
 
   return (
     <main className={styles.page}>
@@ -248,29 +271,13 @@ export default function HistoryPage() {
                 height: "320px",
               }}
             >
-              <ResponsiveContainer
+              <div className={styles.chartInner}>
+                <ResponsiveContainer
                 width="100%"
-                height="100%"
-              >
+                height={320}
+                >
                 <BarChart
-                  data={dailyCounts.map(
-                    (item) => ({
-                      ...item,
-                      isToday:
-                        item.date ===
-                        `${new Date().getFullYear()}/${String(
-                          new Date().getMonth() + 1
-                        ).padStart(
-                          2,
-                          "0"
-                        )}/${String(
-                          new Date().getDate()
-                        ).padStart(
-                          2,
-                          "0"
-                        )}`,
-                    })
-                  )}
+                  data={dailyCounts}
                 >
                   <defs>
                     <linearGradient
@@ -308,6 +315,22 @@ export default function HistoryPage() {
                         stopColor="#e36b9a"
                       />
                     </linearGradient>
+
+                    <filter
+                      id="todayGlow"
+                      x="-50%"
+                      y="-50%"
+                      width="200%"
+                      height="200%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="0"
+                        stdDeviation="6"
+                        floodColor="#e36b9a"
+                        floodOpacity="0.35"
+                      />
+                    </filter>
                   </defs>
 
                   <CartesianGrid
@@ -322,21 +345,39 @@ export default function HistoryPage() {
                     angle={-30}
                     textAnchor="end"
                     height={70}
-                    tick={{
-                      fill: "#a58b77",
-                      fontSize: 16,
+                    tick={({ x, y, payload }) => {
+                      const current =
+                        dailyCounts.find(
+                          (item) =>
+                            item.date === payload.value
+                        );
+                    
+                      return (
+                        <text
+                          x={Number(x)}
+                          y={Number(y) + 15}
+                          textAnchor="middle"
+                          fill={
+                            current?.isToday
+                              ? "#e36b9a"
+                              : "#a58b77"
+                          }
+                          fontSize="12"
+                          fontWeight={
+                            current?.isToday
+                              ? "800"
+                              : "600"
+                          }
+                        >
+                          {payload.value}
+                        </text>
+                      );
                     }}
                   />
 
                   <YAxis
-                    domain={[0, 8]}
-                    ticks={[
-                      0,
-                      2,
-                      4,
-                      6,
-                      8,
-                    ]}
+                    domain={[0, yAxisMax]}
+                    tickCount={6}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
@@ -354,36 +395,21 @@ export default function HistoryPage() {
                     ]}
                   >
                     {dailyCounts.map(
-                      (
-                        item,
-                        index
-                      ) => {
-                        const today =
-                          `${new Date().getFullYear()}/${String(
-                            new Date().getMonth() +
-                              1
-                          ).padStart(
-                            2,
-                            "0"
-                          )}/${String(
-                            new Date().getDate()
-                          ).padStart(
-                            2,
-                            "0"
-                          )}`;
-
-                        return (
-                          <Cell
-                            key={index}
-                            fill={
-                              item.date ===
-                              today
-                                ? "url(#historyTodayGradient)"
-                                : "url(#historyBarGradient)"
-                            }
-                          />
-                        );
-                      }
+                      (item, index) => (
+                        <Cell
+                          key={index}
+                          fill={
+                            item.isToday
+                              ? "url(#historyTodayGradient)"
+                              : "url(#historyBarGradient)"
+                          }
+                          filter={
+                            item.isToday
+                              ? "url(#todayGlow)"
+                              : undefined
+                          }
+                        />
+                      )
                     )}
 
                     <LabelList
@@ -398,14 +424,11 @@ export default function HistoryPage() {
                         } = props;
 
                         const item =
-                          dailyCounts[index];
+                          dailyCounts?.[index];
 
-                        const today =
-                          `${new Date().getFullYear()}/${String(
-                            new Date().getMonth() + 1
-                          ).padStart(2, "0")}/${String(
-                            new Date().getDate()
-                          ).padStart(2, "0")}`;
+                        if (value === 0) {
+                          return null;
+                        }
 
                         return (
                           <text
@@ -413,12 +436,12 @@ export default function HistoryPage() {
                               Number(x) +
                               Number(width) / 2
                             }
-                            y={Number(y) - 8}
+                            y={Number(y) - 10}
                             textAnchor="middle"
                             fontSize="18"
                             fontWeight="700"
                             fill={
-                              item.date === today
+                              item?.isToday
                                 ? "#e36b9a"
                                 : "#6da9e8"
                             }
@@ -431,6 +454,7 @@ export default function HistoryPage() {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
+              </div>
             </div>
           </div>
         </div>
