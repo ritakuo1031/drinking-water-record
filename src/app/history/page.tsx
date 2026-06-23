@@ -214,7 +214,6 @@ export default function HistoryPage() {
         );
   
         const dateLabel =
-          `${date.getFullYear()}/` +
           `${String(
             date.getMonth() + 1
           ).padStart(2, "0")}/` +
@@ -374,7 +373,7 @@ export default function HistoryPage() {
                     new Date(startDate).getTime()) /
                     (1000 * 60 * 60 * 24) +
                     1) *
-                    80,
+                    120,
                   650
                 )}px`,
                 height: "420px",
@@ -388,14 +387,15 @@ export default function HistoryPage() {
               margin={{
                 top: 20,
                 right: 20,
-                left: 20,
-                bottom: 20,
+                left: 10,
+                bottom: 10,
               }}
             >
             <XAxis
               dataKey="date"
               type="category"
               interval={0}
+              height={35}
               tick={{
                 fill: "#a58b77",
                 fontSize: 12,
