@@ -343,7 +343,7 @@ export default function HistoryPage() {
                 margin={{
                   top: 20,
                   right: 10,
-                  left: 15,
+                  left: 0,
                   bottom: 10,
                 }}
               >
@@ -374,6 +374,7 @@ export default function HistoryPage() {
 
                 <XAxis
                   dataKey="time"
+                  interval={0}
                   tick={{
                     fill: "#a58b77",
                     fontSize: 14,
@@ -400,7 +401,34 @@ export default function HistoryPage() {
                 >
                   <LabelList
                     dataKey="count"
-                    position="top"
+                    content={(props: any) => {
+                      const {
+                        x,
+                        y,
+                        width,
+                        value,
+                      } = props;
+
+                      if (Number(value) === 0) {
+                        return null;
+                      }
+
+                      return (
+                        <text
+                          x={
+                            Number(x) +
+                            Number(width) / 2
+                          }
+                          y={Number(y) - 8}
+                          textAnchor="middle"
+                          fontSize="18"
+                          fontWeight="700"
+                          fill="#6da9e8"
+                        >
+                          {value}
+                        </text>
+                      );
+                    }}
                   />
                 </Bar>
               </BarChart>
