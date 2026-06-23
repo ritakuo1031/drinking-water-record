@@ -329,7 +329,7 @@ export default function HistoryPage() {
           <div className={styles.chartScroll}>
             <div
               style={{
-                width: "900px",
+                width: "720px",
                 height: "320px",
               }}
             >
