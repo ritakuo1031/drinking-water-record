@@ -207,7 +207,9 @@ export default function HistoryPage() {
   const buildScatterData = (
     logs: any[]
   ) => {
-    const start = new Date(startDate);
+    const start = new Date(
+      `${startDate}T00:00:00+08:00`
+    );
   
     const today = new Date();
   
@@ -251,6 +253,14 @@ export default function HistoryPage() {
         `${String(
           date.getDate()
         ).padStart(2, "0")}`;
+
+      console.log({
+        created_at: log.created_at,
+        dateLabel,
+        dayIndex,
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+      });
   
       return {
         dayIndex,
@@ -461,8 +471,8 @@ export default function HistoryPage() {
               margin={{
                 top: 20,
                 right: 20,
-                left: 0,
-                bottom: 0,
+                left: -5,
+                bottom: -10,
               }}
             >
             <XAxis
