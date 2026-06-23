@@ -447,8 +447,8 @@ export default function HistoryPage() {
                     new Date(startDate).getTime()) /
                     (1000 * 60 * 60 * 24) +
                     1) *
-                    60,
-                  350
+                    70,
+                  450
                 )}px`,
                 height: "420px",
               }}
@@ -461,8 +461,8 @@ export default function HistoryPage() {
               margin={{
                 top: 20,
                 right: 20,
-                left: 10,
-                bottom: 10,
+                left: 0,
+                bottom: 0,
               }}
             >
             <XAxis
