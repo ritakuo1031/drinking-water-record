@@ -271,7 +271,15 @@ export default function HistoryPage() {
     
     const start = new Date(startDate);
     const end = new Date(endDate);
-    
+
+    const todayLabel =
+      `${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}/` +
+      `${String(
+        today.getDate()
+      ).padStart(2, "0")}`;
+
     let index = 0;
     
     while (start <= end) {
@@ -408,8 +416,8 @@ export default function HistoryPage() {
                     new Date(startDate).getTime()) /
                     (1000 * 60 * 60 * 24) +
                     1) *
-                    120,
-                  650
+                    70,
+                  450
                 )}px`,
                 height: "420px",
               }}
@@ -434,13 +442,33 @@ export default function HistoryPage() {
                 scatterTicks.length - 1,
               ]}
               ticks={scatterTicks}
-              tickFormatter={(value) =>
-                scatterLabels[value]
-              }
-              tick={{
-                fill: "#a58b77",
-                fontSize: 12,
-                fontWeight: 600,
+              tick={({ x, y, payload }) => {
+                const label =
+                  scatterLabels[payload.value];
+
+                const isToday =
+                  label === todayLabel;
+
+                return (
+                  <text
+                    x={Number(x)}
+                    y={Number(y) + 15}
+                    textAnchor="middle"
+                    fill={
+                      isToday
+                        ? "#e36b9a"
+                        : "#a58b77"
+                    }
+                    fontSize="12"
+                    fontWeight={
+                      isToday
+                        ? "800"
+                        : "600"
+                    }
+                  >
+                    {label}
+                  </text>
+                );
               }}
             />
             <YAxis
@@ -475,8 +503,14 @@ export default function HistoryPage() {
             <Scatter
               data={scatterData}
               fill="#84b8f0"
-              shape="circle"
-              line={false}
+              shape={(props: any) => (
+                <circle
+                  cx={props.cx}
+                  cy={props.cy}
+                  r={5}
+                  fill="#84b8f0"
+                />
+              )}
             />
             </ScatterChart>
             </ResponsiveContainer>
