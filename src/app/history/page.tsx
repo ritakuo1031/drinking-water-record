@@ -208,6 +208,16 @@ export default function HistoryPage() {
   const yAxisMax =
     Math.ceil((maxCount + 1) / 2) * 2;
 
+  const maxTimeCount = Math.max(
+    ...waterTimeDistribution.map(
+      item => item.count
+    ),
+    1
+  );
+  
+  const timeYAxisMax =
+    Math.ceil((maxTimeCount + 1) / 2) * 2;
+
   const averageCount =
     dailyCounts.length > 0
       ? (
@@ -316,13 +326,26 @@ export default function HistoryPage() {
             單位：次
           </div>
 
-          <div className={styles.chartInner}>
-            <ResponsiveContainer
-              width="100%"
-              height={300}
+          <div className={styles.chartScroll}>
+            <div
+              style={{
+                width: "900px",
+                height: "320px",
+              }}
             >
+              <div className={styles.chartInner}>
+                <ResponsiveContainer
+                  width="100%"
+                  height={320}
+                >
               <BarChart
                 data={waterTimeDistribution}
+                margin={{
+                  top: 20,
+                  right: 10,
+                  left: 15,
+                  bottom: 10,
+                }}
               >
                 <defs>
                   <linearGradient
@@ -359,6 +382,9 @@ export default function HistoryPage() {
                 />
 
                 <YAxis
+                  domain={[0, timeYAxisMax]}
+                  tickCount={6}
+                  width={30}
                   tick={{
                     fill: "#a58b77",
                     fontSize: 16,
@@ -379,6 +405,8 @@ export default function HistoryPage() {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+              </div>
+            </div>
           </div>
         </div>
 
