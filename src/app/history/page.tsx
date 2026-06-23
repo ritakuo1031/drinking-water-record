@@ -84,7 +84,7 @@ export default function HistoryPage() {
     }
   
     const logs = data ?? [];
-    
+
     console.log(
       "water_logs",
       logs.map(log => ({
@@ -486,6 +486,29 @@ export default function HistoryPage() {
                 bottom: 0,
               }}
             >
+              <defs>
+                <filter
+                  id="scatterGlow"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
+                  <feDropShadow
+                    dx="0"
+                    dy="0"
+                    stdDeviation="4"
+                    floodColor="#e36b9a"
+                    floodOpacity="0.5"
+                  />
+                </filter>
+              </defs>
+
+              <CartesianGrid
+                stroke="#f6cfd8"
+                strokeDasharray="6 6"
+                vertical={false}
+              />
             <XAxis
               type="number"
               dataKey="dayIndex"
@@ -554,18 +577,31 @@ export default function HistoryPage() {
             />
             <Scatter
               data={scatterData}
-              shape={(props: any) => (
-                <circle
-                  cx={props.cx}
-                  cy={props.cy}
-                  r={6}
-                  fill={
-                    props.payload?.isToday
-                      ? "#e36b9a"
-                      : "#84b8f0"
-                  }
-                />
-              )}
+              shape={(props: any) => {
+                const {
+                  cx,
+                  cy,
+                  payload,
+                } = props;
+
+                return (
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={6}
+                    fill={
+                      payload.isToday
+                        ? "#e36b9a"
+                        : "#84b8f0"
+                    }
+                    filter={
+                      payload.isToday
+                        ? "url(#scatterGlow)"
+                        : undefined
+                    }
+                  />
+                );
+              }}
             />
             </ScatterChart>
             </ResponsiveContainer>
