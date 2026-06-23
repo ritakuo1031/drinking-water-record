@@ -168,6 +168,17 @@ export default function HistoryPage() {
   const yAxisMax =
     Math.ceil((maxCount + 1) / 2) * 2;
 
+  const averageCount =
+    dailyCounts.length > 0
+      ? (
+          dailyCounts.reduce(
+            (sum, item) =>
+              sum + item.count,
+            0
+          ) / dailyCounts.length
+        ).toFixed(1)
+      : "0.0";
+
   return (
     <main className={styles.page}>
       <div className={styles.container}>
@@ -276,7 +287,7 @@ export default function HistoryPage() {
                   dailyCounts.length * 55,
                   500
                 )}px`,
-                height: "320px",
+                height: "480px",
               }}
             >
               <div className={styles.chartInner}>
@@ -475,6 +486,19 @@ export default function HistoryPage() {
               </div>
             </div>
           </div>
+
+          <div className={styles.averageTag}>
+            平均
+
+            <span
+              className={styles.averageNumber}
+            >
+              {averageCount}
+            </span>
+
+            杯 / 天
+          </div>
+
         </div>
 
         <div className={styles.tableCard}>

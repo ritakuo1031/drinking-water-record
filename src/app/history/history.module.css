@@ -239,6 +239,38 @@
     min-height: 320px;
   }
 
+  .averageTag {
+    width: 100%;
+  
+    margin-top: 20px;
+  
+    background: #fff3c4;
+  
+    border-radius: 999px;
+  
+    padding: 12px 24px;
+  
+    text-align: center;
+  
+    color: #8b6b4a;
+  
+    font-size: 24px;
+  
+    font-weight: 700;
+  }
+
+  .averageNumber {
+    margin: 0 6px;
+  
+    color: #e36b9a;
+  
+    font-size: 42px;
+  
+    font-weight: 800;
+  
+    line-height: 1;
+  }
+
   /* 喝水時間紀錄表格 */
 
   .tableCard {
