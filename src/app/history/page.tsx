@@ -220,8 +220,22 @@ export default function HistoryPage() {
       ).padStart(2, "0")}`;
   
     const points = logs.map((log) => {
-      const date = new Date(
+      const utcDate = new Date(
         log.created_at
+      );
+      
+      const date = new Date(
+        utcDate.toLocaleString(
+          "en-US",
+          {
+            timeZone: "Asia/Taipei",
+          }
+        )
+      );
+
+      console.log(
+        log.created_at,
+        date.toString()
       );
   
       const dayIndex = Math.floor(
