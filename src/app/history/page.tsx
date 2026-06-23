@@ -46,6 +46,11 @@ export default function HistoryPage() {
   const [dailyCounts, setDailyCounts] =
     useState<any[]>([]);
 
+  const [
+    waterTimeDistribution,
+    setWaterTimeDistribution,
+  ] = useState<any[]>([]);
+
   const loadWaterLogs = async () => {
     const {
       data: { user },
@@ -77,6 +82,8 @@ export default function HistoryPage() {
     setWaterLogs(logs);
 
     buildDailyCounts(logs);
+
+    buildTimeDistribution(logs);
   };
 
   const buildDailyCounts = (
@@ -153,8 +160,41 @@ export default function HistoryPage() {
     }
 
     setDailyCounts(result);
-
   };  
+
+  const buildTimeDistribution = (
+    logs: any[]
+  ) => {
+    const buckets = [
+      { time: "00-02", count: 0 },
+      { time: "02-04", count: 0 },
+      { time: "04-06", count: 0 },
+      { time: "06-08", count: 0 },
+      { time: "08-10", count: 0 },
+      { time: "10-12", count: 0 },
+      { time: "12-14", count: 0 },
+      { time: "14-16", count: 0 },
+      { time: "16-18", count: 0 },
+      { time: "18-20", count: 0 },
+      { time: "20-22", count: 0 },
+      { time: "22-24", count: 0 },
+    ];
+  
+    logs.forEach((log) => {
+      const hour = new Date(
+        log.created_at
+      ).getHours();
+  
+      const index =
+        Math.floor(hour / 2);
+  
+      buckets[index].count += 1;
+    });
+  
+    setWaterTimeDistribution(
+      buckets
+    );
+  };
 
   useEffect(() => {
     loadWaterLogs();
@@ -267,8 +307,79 @@ export default function HistoryPage() {
           )}
         </div>
   
-        <div className={styles.placeholderCard}>
-          第一個圖表區塊（喝水時間分布）
+        <div className={styles.chartCard}>
+          <h2 className={styles.cardTitle}>
+            喝水時間分布
+          </h2>
+
+          <div className={styles.chartSubTitle}>
+            單位：次
+          </div>
+
+          <div className={styles.chartInner}>
+            <ResponsiveContainer
+              width="100%"
+              height={300}
+            >
+              <BarChart
+                data={waterTimeDistribution}
+              >
+                <defs>
+                  <linearGradient
+                    id="timeGradient"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop
+                      offset="0%"
+                      stopColor="#b8d9fb"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="#84b8f0"
+                    />
+                  </linearGradient>
+                </defs>
+
+                <CartesianGrid
+                  stroke="#f6cfd8"
+                  strokeDasharray="6 6"
+                  vertical={false}
+                />
+
+                <XAxis
+                  dataKey="time"
+                  tick={{
+                    fill: "#a58b77",
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                />
+
+                <YAxis
+                  tick={{
+                    fill: "#a58b77",
+                    fontSize: 16,
+                    fontWeight: 600,
+                  }}
+                />
+
+                <Bar
+                  dataKey="count"
+                  fill="url(#timeGradient)"
+                  radius={[12,12,0,0]}
+                  barSize={28}
+                >
+                  <LabelList
+                    dataKey="count"
+                    position="top"
+                  />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         <div className={styles.chartCard}>
