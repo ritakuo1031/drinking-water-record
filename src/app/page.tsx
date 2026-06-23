@@ -229,12 +229,6 @@ export default function Home() {
       return;
     }
   
-    console.log(
-      "準備新增紀錄",
-      user.id,
-      user.email
-    );
-  
     const { error } = await supabase
       .from("water_logs")
       .insert([
@@ -556,7 +550,7 @@ export default function Home() {
       href="/history"
       className={styles.historyButton}
     >
-      📋 歷史紀錄 (待開發)
+      📋 歷史紀錄
     </Link>
   )}
 </main>

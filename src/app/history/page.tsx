@@ -85,13 +85,6 @@ export default function HistoryPage() {
   
     const logs = data ?? [];
 
-    console.log(
-      "water_logs",
-      logs.map(log => ({
-        created_at: log.created_at
-      }))
-    );
-
     setWaterLogs(logs);
 
     buildDailyCounts(logs);
@@ -242,11 +235,6 @@ export default function HistoryPage() {
         )
       );
 
-      console.log(
-        log.created_at,
-        date.toString()
-      );
-  
       const dayIndex = Math.floor(
         (date.getTime() -
           start.getTime()) /
@@ -261,14 +249,6 @@ export default function HistoryPage() {
           date.getDate()
         ).padStart(2, "0")}`;
 
-      console.log({
-        created_at: log.created_at,
-        dateLabel,
-        dayIndex,
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-      });
-  
       return {
         dayIndex,
   
@@ -282,12 +262,6 @@ export default function HistoryPage() {
           dateLabel === todayLabel,
       };
     });
-  
-    console.log(points);
-    console.log(
-      "scatter points",
-      points
-    );
   
     setScatterData(points);
   };
