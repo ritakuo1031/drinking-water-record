@@ -344,7 +344,7 @@ export default function HistoryPage() {
                   top: 20,
                   right: 10,
                   left: 0,
-                  bottom: 10,
+                  bottom: 0,
                 }}
               >
                 <defs>
