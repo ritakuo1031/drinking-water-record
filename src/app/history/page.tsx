@@ -488,12 +488,20 @@ export default function HistoryPage() {
               dataKey="dayIndex"
               domain={[
                 -0.5,
-                scatterTicks.length - 0.5,
+                Math.max(
+                  scatterTicks.length - 0.5,
+                  0.5
+                ),
               ]}
-              ticks={scatterTicks}
+              ticks={
+                scatterTicks.length > 0
+                  ? scatterTicks
+                  : [0]
+              }
               tick={({ x, y, payload }) => {
                 const label =
-                  scatterLabels[payload.value];
+                  scatterLabels[payload.value] ??
+                  "";
 
                 const isToday =
                   label === todayLabel;
