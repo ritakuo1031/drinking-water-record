@@ -11,6 +11,8 @@ import {
   CartesianGrid,
   Cell,
   LabelList,
+  ScatterChart,
+  Scatter,
 } from "recharts";
 
 import Link from "next/link";
@@ -51,6 +53,10 @@ export default function HistoryPage() {
     setWaterTimeDistribution,
   ] = useState<any[]>([]);
 
+  const [scatterData,
+    setScatterData] =
+    useState<any[]>([]);
+
   const loadWaterLogs = async () => {
     const {
       data: { user },
@@ -84,6 +90,8 @@ export default function HistoryPage() {
     buildDailyCounts(logs);
 
     buildTimeDistribution(logs);
+
+    buildScatterData(logs);
   };
 
   const buildDailyCounts = (
@@ -194,6 +202,38 @@ export default function HistoryPage() {
     setWaterTimeDistribution(
       buckets
     );
+  };
+
+  const buildScatterData = (
+    logs: any[]
+  ) => {
+    const points = logs.map(
+      (log) => {
+        const date = new Date(
+          log.created_at
+        );
+  
+        const dateLabel =
+          `${date.getFullYear()}/` +
+          `${String(
+            date.getMonth() + 1
+          ).padStart(2, "0")}/` +
+          `${String(
+            date.getDate()
+          ).padStart(2, "0")}`;
+  
+        const timeValue =
+          date.getHours() +
+          date.getMinutes() / 60;
+  
+        return {
+          date: dateLabel,
+          time: timeValue,
+        };
+      }
+    );
+  
+    setScatterData(points);
   };
 
   useEffect(() => {
@@ -316,10 +356,94 @@ export default function HistoryPage() {
             </div>
           )}
         </div>
+
+        <div className={styles.chartCard}>
+          <h2 className={styles.cardTitle}>
+            喝水時間點分布
+          </h2>
+
+          <div className={styles.chartSubTitle}>
+            每個點代表一次喝水紀錄
+          </div>
+
+          <div className={styles.chartScroll}>
+            <div
+              style={{
+                width: `${Math.max(
+                  ((new Date(endDate).getTime() -
+                    new Date(startDate).getTime()) /
+                    (1000 * 60 * 60 * 24) +
+                    1) *
+                    80,
+                  650
+                )}px`,
+                height: "420px",
+              }}
+            >
+            <ResponsiveContainer
+              width="100%"
+              height={400}
+            >
+            <ScatterChart
+              margin={{
+                top: 20,
+                right: 20,
+                left: 20,
+                bottom: 20,
+              }}
+            >
+            <XAxis
+              dataKey="date"
+              type="category"
+              interval={0}
+              tick={{
+                fill: "#a58b77",
+                fontSize: 12,
+                fontWeight: 600,
+              }}
+            />
+            <YAxis
+              dataKey="time"
+              type="number"
+              domain={[0, 24]}
+              ticks={[
+                0,
+                2,
+                4,
+                6,
+                8,
+                10,
+                12,
+                14,
+                16,
+                18,
+                20,
+                22,
+                24,
+              ]}
+              tickFormatter={(value) =>
+                `${String(value)
+                  .padStart(2, "0")}:00`
+              }
+              tick={{
+                fill: "#a58b77",
+                fontSize: 14,
+                fontWeight: 600,
+              }}
+            />
+            <Scatter
+              data={scatterData}
+              fill="#84b8f0"
+            />
+            </ScatterChart>
+            </ResponsiveContainer>
+            </div>
+            </div>
+            </div>
   
         <div className={styles.chartCard}>
           <h2 className={styles.cardTitle}>
-            喝水時間分布
+            喝水時段分布
           </h2>
 
           <div className={styles.chartSubTitle}>
