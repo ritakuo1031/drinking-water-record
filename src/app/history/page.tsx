@@ -209,6 +209,16 @@ export default function HistoryPage() {
   ) => {
     const start = new Date(startDate);
   
+    const today = new Date();
+  
+    const todayLabel =
+      `${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}/` +
+      `${String(
+        today.getDate()
+      ).padStart(2, "0")}`;
+  
     const points = logs.map((log) => {
       const date = new Date(
         log.created_at
@@ -220,6 +230,14 @@ export default function HistoryPage() {
           (1000 * 60 * 60 * 24)
       );
   
+      const dateLabel =
+        `${String(
+          date.getMonth() + 1
+        ).padStart(2, "0")}/` +
+        `${String(
+          date.getDate()
+        ).padStart(2, "0")}`;
+  
       return {
         dayIndex,
   
@@ -227,15 +245,14 @@ export default function HistoryPage() {
           date.getHours() +
           date.getMinutes() / 60,
   
-        dateLabel:
-          `${String(
-            date.getMonth() + 1
-          ).padStart(2, "0")}/` +
-          `${String(
-            date.getDate()
-          ).padStart(2, "0")}`,
+        dateLabel,
+  
+        isToday:
+          dateLabel === todayLabel,
       };
     });
+  
+    console.log(points);
   
     setScatterData(points);
   };
@@ -416,8 +433,8 @@ export default function HistoryPage() {
                     new Date(startDate).getTime()) /
                     (1000 * 60 * 60 * 24) +
                     1) *
-                    70,
-                  450
+                    60,
+                  350
                 )}px`,
                 height: "420px",
               }}
@@ -438,8 +455,8 @@ export default function HistoryPage() {
               type="number"
               dataKey="dayIndex"
               domain={[
-                0,
-                scatterTicks.length - 1,
+                -0.5,
+                scatterTicks.length - 0.5,
               ]}
               ticks={scatterTicks}
               tick={({ x, y, payload }) => {
@@ -459,7 +476,7 @@ export default function HistoryPage() {
                         ? "#e36b9a"
                         : "#a58b77"
                     }
-                    fontSize="12"
+                    fontSize="14"
                     fontWeight={
                       isToday
                         ? "800"
@@ -502,13 +519,16 @@ export default function HistoryPage() {
             />
             <Scatter
               data={scatterData}
-              fill="#84b8f0"
               shape={(props: any) => (
                 <circle
                   cx={props.cx}
                   cy={props.cy}
-                  r={5}
-                  fill="#84b8f0"
+                  r={6}
+                  fill={
+                    props.payload?.isToday
+                      ? "#e36b9a"
+                      : "#84b8f0"
+                  }
                 />
               )}
             />
