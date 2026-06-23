@@ -84,6 +84,13 @@ export default function HistoryPage() {
     }
   
     const logs = data ?? [];
+    
+    console.log(
+      "water_logs",
+      logs.map(log => ({
+        created_at: log.created_at
+      }))
+    );
 
     setWaterLogs(logs);
 
