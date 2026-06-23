@@ -207,30 +207,35 @@ export default function HistoryPage() {
   const buildScatterData = (
     logs: any[]
   ) => {
-    const points = logs.map(
-      (log) => {
-        const date = new Date(
-          log.created_at
-        );
+    const start = new Date(startDate);
   
-        const dateLabel =
+    const points = logs.map((log) => {
+      const date = new Date(
+        log.created_at
+      );
+  
+      const dayIndex = Math.floor(
+        (date.getTime() -
+          start.getTime()) /
+          (1000 * 60 * 60 * 24)
+      );
+  
+      return {
+        dayIndex,
+  
+        time:
+          date.getHours() +
+          date.getMinutes() / 60,
+  
+        dateLabel:
           `${String(
             date.getMonth() + 1
           ).padStart(2, "0")}/` +
           `${String(
             date.getDate()
-          ).padStart(2, "0")}`;
-  
-        const timeValue =
-          date.getHours() +
-          date.getMinutes() / 60;
-  
-        return {
-          date: dateLabel,
-          time: timeValue,
-        };
-      }
-    );
+          ).padStart(2, "0")}`,
+      };
+    });
   
     setScatterData(points);
   };
@@ -256,6 +261,36 @@ export default function HistoryPage() {
   
   const timeYAxisMax =
     Math.ceil((maxTimeCount + 1) / 2) * 2;
+  
+    const scatterTicks = [];
+
+    const scatterLabels: Record<
+      number,
+      string
+    > = {};
+    
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    let index = 0;
+    
+    while (start <= end) {
+      scatterTicks.push(index);
+    
+      scatterLabels[index] =
+        `${String(
+          start.getMonth() + 1
+        ).padStart(2, "0")}/` +
+        `${String(
+          start.getDate()
+        ).padStart(2, "0")}`;
+    
+      start.setDate(
+        start.getDate() + 1
+      );
+    
+      index++;
+    }
 
   const averageCount =
     dailyCounts.length > 0
@@ -392,10 +427,16 @@ export default function HistoryPage() {
               }}
             >
             <XAxis
-              dataKey="date"
-              type="category"
-              interval={0}
-              height={35}
+              type="number"
+              dataKey="dayIndex"
+              domain={[
+                0,
+                scatterTicks.length - 1,
+              ]}
+              ticks={scatterTicks}
+              tickFormatter={(value) =>
+                scatterLabels[value]
+              }
               tick={{
                 fill: "#a58b77",
                 fontSize: 12,
@@ -434,6 +475,8 @@ export default function HistoryPage() {
             <Scatter
               data={scatterData}
               fill="#84b8f0"
+              shape="circle"
+              line={false}
             />
             </ScatterChart>
             </ResponsiveContainer>
