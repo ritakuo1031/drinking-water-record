@@ -287,7 +287,7 @@ export default function HistoryPage() {
                   dailyCounts.length * 55,
                   500
                 )}px`,
-                height: "480px",
+                height: "320px",
               }}
             >
               <div className={styles.chartInner}>
