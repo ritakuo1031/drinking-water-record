@@ -277,6 +277,10 @@ export default function HistoryPage() {
     });
   
     console.log(points);
+    console.log(
+      "scatter points",
+      points
+    );
   
     setScatterData(points);
   };
@@ -472,7 +476,7 @@ export default function HistoryPage() {
                 top: 20,
                 right: 20,
                 left: -5,
-                bottom: -10,
+                bottom: 0,
               }}
             >
             <XAxis
