@@ -25,6 +25,10 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [weeklyData, setWeeklyData] =
     useState<WeeklyDataItem[]>([]);
+  const [
+    weeklyYAxisMax,
+    setWeeklyYAxisMax,
+  ] = useState(8);
   const [user, setUser] = useState<any>(null);
   const DAILY_WATER_TARGET = 7;
 
@@ -99,6 +103,8 @@ export default function Home() {
     }
   
     const result = [];
+
+    let maxCount = 0;
   
     const daysToShow = 8;
 
@@ -132,6 +138,10 @@ export default function Home() {
             day.toLocaleDateString("zh-TW")
           );
         }).length ?? 0;
+
+      if (count > maxCount) {
+        maxCount = count;
+      }
   
       result.push({
         date: dateKey,
@@ -142,7 +152,12 @@ export default function Home() {
       });
     }
   
+    const yMax =
+      Math.ceil((maxCount + 1) / 2) * 2;
+
     setWeeklyData(result);
+
+    setWeeklyYAxisMax(yMax);
   };
   useEffect(() => {
     const getUser = async () => {
@@ -452,8 +467,8 @@ export default function Home() {
       />
 
       <YAxis
-        domain={[0, 8]}
-        ticks={[0, 2, 4, 6, 8]}
+        domain={[0, weeklyYAxisMax]}
+        tickCount={6}
         tick={{
           fontSize: 18,
           fill: "#a58b77",
