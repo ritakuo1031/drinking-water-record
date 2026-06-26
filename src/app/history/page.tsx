@@ -453,6 +453,7 @@ export default function HistoryPage() {
               height={400}
             >
             <ScatterChart
+              data={scatterData}
               margin={{
                 top: 20,
                 right: 20,
@@ -558,7 +559,17 @@ export default function HistoryPage() {
               }}
             />
             <Scatter
-              data={scatterData}
+              data={
+                scatterData.length > 0
+                  ? scatterData
+                  : [
+                      {
+                        dayIndex: 0,
+                        time: null,
+                      },
+                    ]
+              }
+              isAnimationActive={false}
               shape={(props: any) => {
                 const {
                   cx,
