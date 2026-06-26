@@ -626,8 +626,9 @@ export default function HistoryPage() {
                   ? scatterData
                   : [
                       {
-                        dayIndex: 0,
-                        time: null,
+                        dayIndex: -999,
+                        time: 0,
+                        hidden: true,
                       },
                     ]
               }
@@ -638,6 +639,10 @@ export default function HistoryPage() {
                   cy,
                   payload,
                 } = props;
+
+                if (payload.hidden) {
+                  return null;
+                }
 
                 return (
                   <circle
