@@ -306,7 +306,28 @@ export default function HistoryPage() {
       };
     });
   
-    setScatterData(points);
+    if (points.length === 0) {
+      const emptyPoints = [];
+    
+      const current = new Date(start);
+    
+      while (current <= new Date(`${endDate}T00:00:00+08:00`)) {
+        emptyPoints.push({
+          dayIndex: Math.floor(
+            (current.getTime() - start.getTime()) /
+              (1000 * 60 * 60 * 24)
+          ),
+          time: 0,
+          hidden: true,
+        });
+    
+        current.setDate(current.getDate() + 1);
+      }
+    
+      setScatterData(emptyPoints);
+    } else {
+      setScatterData(points);
+    }
   };
 
   useEffect(() => {
@@ -637,6 +658,10 @@ export default function HistoryPage() {
                     cy,
                     payload,
                   } = props;
+
+                  if (payload.hidden) {
+                    return null;
+                  }
 
                   return (
                     <circle
