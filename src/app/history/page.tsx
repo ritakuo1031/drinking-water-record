@@ -559,7 +559,6 @@ export default function HistoryPage() {
                 24,
               ]}
               interval={0}
-              allowDataOverflow
               tickFormatter={(value) =>
                 `${String(value)
                   .padStart(2, "0")}:00`
