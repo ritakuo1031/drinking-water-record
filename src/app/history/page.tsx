@@ -340,10 +340,44 @@ export default function HistoryPage() {
       ? cupMlNumber
       : 8
   );
-
+  
+  // ===== 智慧刻度 =====
+  let step = 2;
+  
+  if (showMl) {
+    if (maxValue <= 300) {
+      step = 50;
+    } else if (maxValue <= 600) {
+      step = 100;
+    } else if (maxValue <= 1200) {
+      step = 200;
+    } else {
+      step = 500;
+    }
+  } else {
+    if (maxValue <= 10) {
+      step = 2;
+    } else if (maxValue <= 20) {
+      step = 5;
+    } else {
+      step = 10;
+    }
+  }
+  
+  // 往上取整，留一點空間
   const yAxisMax =
-    Math.ceil((maxValue + 1) / 2) * 2;
-
+    Math.ceil(maxValue / step) * step;
+  
+  const yAxisTicks: number[] = [];
+  
+  for (
+    let i = 0;
+    i <= yAxisMax;
+    i += step
+  ) {
+    yAxisTicks.push(i);
+  }
+  
   const maxTimeCount = Math.max(
     ...waterTimeDistribution.map(
       item => item.count
@@ -1034,9 +1068,9 @@ export default function HistoryPage() {
 
                   <YAxis
                     domain={[0, yAxisMax]}
-                    tickCount={6}
+                    ticks={yAxisTicks}
                     allowDecimals={false}
-                    width={30}
+                    width={40}
                     tick={{
                       fill: "#a58b77",
                       fontSize: 18,
