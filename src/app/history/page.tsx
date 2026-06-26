@@ -749,37 +749,63 @@ export default function HistoryPage() {
           </div>
           
           <div className={styles.unitSetting}>
-            <div className={styles.mlInputRow}>
-              <span>1杯 =</span>
 
-              <input
-                type="number"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className={styles.mlInput}
-                value={cupMl}
-                onChange={(e) =>
-                  setCupMl(
-                    e.target.value.replace(/\D/g, "")
-                  )
-                }
-              />
+            <div className={styles.unitTopRow}>
 
-              <span>ml</span>
+              <div className={styles.mlInputRow}>
+                <span>1杯 =</span>
+
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className={styles.mlInput}
+                  value={cupMl}
+                  onChange={(e) =>
+                    setCupMl(
+                      e.target.value.replace(/\D/g, "")
+                    )
+                  }
+                />
+
+                <span>ml</span>
+              </div>
+
+              <div className={styles.switchGroup}>
+
+                <span
+                  className={!showMl
+                    ? styles.switchActive
+                    : styles.switchText}
+                >
+                  杯
+                </span>
+
+                <label className={styles.switch}>
+                  <input
+                    type="checkbox"
+                    checked={showMl}
+                    disabled={!cupMl}
+                    onChange={(e) =>
+                      setShowMl(e.target.checked)
+                    }
+                  />
+
+                  <span className={styles.slider}></span>
+                </label>
+
+                <span
+                  className={showMl
+                    ? styles.switchActive
+                    : styles.switchText}
+                >
+                  ml
+                </span>
+
+              </div>
+
             </div>
 
-            <label className={styles.switch}>
-              <input
-                type="checkbox"
-                checked={showMl}
-                disabled={!cupMl}
-                onChange={(e) =>
-                  setShowMl(e.target.checked)
-                }
-              />
-
-              <span className={styles.slider}></span>
-            </label>
           </div>
           
           <div className={styles.chartSubTitle}>
