@@ -53,6 +53,11 @@ export default function Home() {
     (displayCount / target) * 100,
     100
   );
+  const encourageText =
+  displayCount >= target
+    ? "恭喜達標！你超棒的～\n明天也要繼續維持唷❤️"
+    : "繼續加油，離目標又更近一步了！";
+
   const loadTodayWaterCount = async () => {
     if (!user) return;
   
@@ -401,8 +406,16 @@ export default function Home() {
       </span>
     </div>
 
-    <p className={styles.encourage}>
-      繼續加油，離目標又更近一步了！
+    <p
+      className={styles.encourage}
+      style={{
+        color:
+          displayCount >= target
+            ? "#e36b9a"
+            : "#9c836c",
+      }}
+    >
+      {encourageText}
     </p>
   </div>
 

@@ -209,6 +209,8 @@
     font-weight: 700;
   
     color: #9c836c;
+
+    white-space: pre-line;
   }
 
   /* 自訂目標 */
