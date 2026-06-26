@@ -992,7 +992,7 @@ export default function HistoryPage() {
                     )}
 
                     <LabelList
-                      dataKey="count"
+                      dataKey="value"
                       content={(props: any) => {
                         const {
                           x,
@@ -1026,7 +1026,9 @@ export default function HistoryPage() {
                                 : "#6da9e8"
                             }
                           >
-                            {value}
+                            {showMl
+                              ? Math.round(Number(value))
+                              : value}
                           </text>
                         );
                       }}
