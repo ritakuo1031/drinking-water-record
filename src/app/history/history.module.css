@@ -191,11 +191,13 @@
   .unitTopRow{
     display:flex;
   
-    justify-content:flex-end;
+    justify-content:flex-start;
   
     align-items:center;
   
-    gap:22px;
+    gap:24px;
+
+    margin-bottom:18px;
   }
 
   .switchGroup{
@@ -207,7 +209,7 @@
   }
 
   .switchText{
-    font-size:15px;
+    font-size:18px;
   
     font-weight:600;
   
@@ -219,7 +221,7 @@
   }
   
   .switchActive{
-    font-size:15px;
+    font-size:18px;
   
     font-weight:700;
   
@@ -228,15 +230,6 @@
     opacity:1;
   
     transition:.25s;
-  }
-
-  .dailyToolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-  
-    margin-top:12px;
-    margin-bottom:24px;
   }
 
   .unitSetting{
@@ -253,7 +246,7 @@
   
     color:#a58b77;
   
-    font-size:16px;
+    font-size:18px;
     font-weight:600;
   }
 
@@ -270,7 +263,7 @@
   
     background:white;
   
-    font-size:16px;
+    font-size:18px;
   
     font-weight:700;
   
