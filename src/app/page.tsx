@@ -419,6 +419,7 @@ export default function Home() {
     </p>
   </div>
 
+  {user && (
   <div className={styles.targetSetting}>
     <label className={styles.targetCheckbox}>
       <input
@@ -471,6 +472,7 @@ export default function Home() {
       杯
     </span>
   </div>
+  )}
 
   {user && (
   <section className={styles.trendCard}>
