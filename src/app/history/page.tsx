@@ -514,12 +514,17 @@ export default function HistoryPage() {
                 <input
                   type="date"
                   value={startDate}
+                  max={endDate}
                   className={styles.dateInput}
-                  onChange={(e) =>
-                    setStartDate(
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value;
+                  
+                    setStartDate(value);
+                  
+                    if (value > endDate) {
+                      setEndDate(value);
+                    }
+                  }}
                 />
               </div>
 
@@ -533,12 +538,17 @@ export default function HistoryPage() {
                 <input
                   type="date"
                   value={endDate}
+                  min={startDate}
                   className={styles.dateInput}
-                  onChange={(e) =>
-                    setEndDate(
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value;
+                  
+                    setEndDate(value);
+                  
+                    if (value < startDate) {
+                      setStartDate(value);
+                    }
+                  }}
                 />
               </div>
             </div>
