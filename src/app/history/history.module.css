@@ -216,17 +216,7 @@
     font-weight:600;
   }
 
-  .cupMlRow{
-    display:flex;
-    align-items:center;
-    gap:8px;
-  
-    color:#a58b77;
-    font-size:15px;
-    font-weight:600;
-  }
-
-  .cupMlInput{
+  .mlInput{
     width:60px;
   
     height:36px;
@@ -344,6 +334,8 @@
     color: #a58b77;
   
     margin-bottom: 12px;
+
+    white-space: nowrap;
   }
   
   .chartScroll {
