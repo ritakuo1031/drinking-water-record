@@ -747,46 +747,44 @@ export default function HistoryPage() {
               每日喝水杯數
             </h2>
           </div>
+          
+          <div className={styles.unitSetting}>
+            <div className={styles.mlInputRow}>
+              <span>1杯 =</span>
 
-          <div className={styles.dailyToolbar}>
-            <div className={styles.chartSubTitle}>
-              單位：
-              {showMl ? "ml" : "杯"}
+              <input
+                type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                className={styles.mlInput}
+                value={cupMl}
+                onChange={(e) =>
+                  setCupMl(
+                    e.target.value.replace(/\D/g, "")
+                  )
+                }
+              />
+
+              <span>ml</span>
             </div>
 
-            <div className={styles.unitSetting}>
-              <div className={styles.mlInputRow}>
-                <span>1杯 =</span>
+            <label className={styles.switch}>
+              <input
+                type="checkbox"
+                checked={showMl}
+                disabled={!cupMl}
+                onChange={(e) =>
+                  setShowMl(e.target.checked)
+                }
+              />
 
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className={styles.mlInput}
-                  value={cupMl}
-                  onChange={(e) =>
-                    setCupMl(
-                      e.target.value.replace(/\D/g, "")
-                    )
-                  }
-                />
-
-                <span>ml</span>
-              </div>
-
-              <label className={styles.switch}>
-                <input
-                  type="checkbox"
-                  checked={showMl}
-                  disabled={!cupMl}
-                  onChange={(e) =>
-                    setShowMl(e.target.checked)
-                  }
-                />
-
-                <span className={styles.slider}></span>
-              </label>
-            </div>
+              <span className={styles.slider}></span>
+            </label>
+          </div>
+          
+          <div className={styles.chartSubTitle}>
+            單位：
+            {showMl ? "ml" : "杯"}
           </div>
 
           <div className={styles.chartScroll}>
