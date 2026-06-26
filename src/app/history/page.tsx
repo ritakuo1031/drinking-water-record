@@ -63,6 +63,15 @@ export default function HistoryPage() {
   const [showMl, setShowMl] =
     useState(false);
   
+  const cupMlNumber = Number(cupMl || 0);
+
+  const dailyChartData = dailyCounts.map((item) => ({
+    ...item,
+    value: showMl
+      ? item.count * cupMlNumber
+      : item.count,
+  }));
+
     const loadWaterLogs = async () => {
     const {
       data: { user },
@@ -276,13 +285,15 @@ export default function HistoryPage() {
     loadWaterLogs();
   }, [startDate, endDate]);
 
-  const maxCount = Math.max(
-    ...dailyCounts.map(item => item.count),
-    8
+  const maxValue = Math.max(
+    ...dailyChartData.map(item => item.value),
+    showMl
+      ? cupMlNumber
+      : 8
   );
-  
+
   const yAxisMax =
-    Math.ceil((maxCount + 1) / 2) * 2;
+    Math.ceil((maxValue + 1) / 2) * 2;
 
   const maxTimeCount = Math.max(
     ...waterTimeDistribution.map(
@@ -352,6 +363,12 @@ export default function HistoryPage() {
           ) / dailyCounts.length
         ).toFixed(1)
       : "0.0";
+
+  const averageDisplay = showMl
+  ? Math.round(
+      Number(averageCount) * cupMlNumber
+    )
+  : averageCount;
 
   return (
     <main className={styles.page}>
@@ -829,7 +846,7 @@ export default function HistoryPage() {
                 height={320}
                 >
                 <BarChart
-                  data={dailyCounts}
+                  data={dailyChartData}
                   margin={{
                     top: 20,
                     right: 10,
@@ -947,7 +964,7 @@ export default function HistoryPage() {
                   />
 
                   <Bar
-                    dataKey="count"
+                    dataKey="value"
                     barSize={36}
                     radius={[
                       12,
@@ -1027,10 +1044,12 @@ export default function HistoryPage() {
             <span
               className={styles.averageNumber}
             >
-              {averageCount}
+              {averageDisplay}
             </span>
 
-            杯 / 天
+            {showMl
+              ? " ml / 天"
+              : " 杯 / 天"}
           </div>
 
         </div>
