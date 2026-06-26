@@ -55,7 +55,7 @@ export default function Home() {
   );
   const encourageText =
   displayCount >= target
-    ? "恭喜達標！你超棒的～\n明天也要繼續維持唷❤️"
+    ? "恭喜達標！你超棒的～\n明天也要繼續保持唷❤️"
     : "繼續加油，離目標又更近一步了！";
 
   const loadTodayWaterCount = async () => {

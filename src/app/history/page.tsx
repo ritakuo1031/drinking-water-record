@@ -465,7 +465,7 @@ export default function HistoryPage() {
             <ScatterChart
               data={scatterData}
               margin={{
-                top: 20,
+                top: 35,
                 right: 20,
                 left: -5,
                 bottom: 0,
@@ -482,7 +482,7 @@ export default function HistoryPage() {
                   <feDropShadow
                     dx="0"
                     dy="0"
-                    stdDeviation="4"
+                    stdDeviation="3"
                     floodColor="#e36b9a"
                     floodOpacity="0.5"
                   />
@@ -542,7 +542,7 @@ export default function HistoryPage() {
             <YAxis
               dataKey="time"
               type="number"
-              domain={[0, 24]}
+              domain={[0, 25]}
               ticks={[
                 0,
                 2,
