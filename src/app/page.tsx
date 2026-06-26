@@ -240,7 +240,9 @@ export default function Home() {
         .from("profiles")
         .select(`
           custom_water_target,
-          use_custom_target
+          use_custom_target,
+          cup_ml,
+          show_ml
         `)
         .eq("id", user.id)
         .single();
