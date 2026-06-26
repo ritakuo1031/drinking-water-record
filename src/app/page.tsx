@@ -30,14 +30,27 @@ export default function Home() {
     setWeeklyYAxisMax,
   ] = useState(8);
   const [user, setUser] = useState<any>(null);
-  const DAILY_WATER_TARGET = 7;
+
+  const DEFAULT_WATER_TARGET = 7;
+
+  const [useCustomTarget, setUseCustomTarget] =
+    useState(false);
+
+  const [customTarget, setCustomTarget] =
+    useState("");
+
+  const target =
+    useCustomTarget &&
+    Number(customTarget) > 0
+      ? Number(customTarget)
+      : DEFAULT_WATER_TARGET;
 
   const displayCount = user
     ? count
     : 0;
 
   const progress = Math.min(
-    (displayCount / DAILY_WATER_TARGET) * 100,
+    (displayCount / target) * 100,
     100
   );
   const loadTodayWaterCount = async () => {
@@ -205,6 +218,7 @@ export default function Home() {
   
     loadTodayWaterCount();
     loadWeeklyTrend();
+    loadUserTarget();
   }, [user]);
   
   const signInWithGoogle = async () => {
@@ -213,6 +227,60 @@ export default function Home() {
     });
   };
   
+  const loadUserTarget = async () => {
+    if (!user) return;
+  
+    const { data, error } =
+      await supabase
+        .from("profiles")
+        .select(`
+          custom_water_target,
+          use_custom_target
+        `)
+        .eq("id", user.id)
+        .single();
+  
+    if (error) {
+      console.error(error);
+      return;
+    }
+  
+    setUseCustomTarget(
+      data?.use_custom_target ?? false
+    );
+  
+    setCustomTarget(
+      data?.custom_water_target
+        ? String(data.custom_water_target)
+        : ""
+    );
+  };
+
+  const saveUserTarget = async (
+    checked: boolean,
+    value: string
+  ) => {
+  
+    if (!user) return;
+  
+    const { error } =
+      await supabase
+        .from("profiles")
+        .update({
+          use_custom_target: checked,
+  
+          custom_water_target:
+            checked && value !== ""
+              ? Number(value)
+              : null,
+        })
+        .eq("id", user.id);
+  
+    if (error) {
+      console.error(error);
+    }
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
   
@@ -308,7 +376,7 @@ export default function Home() {
     </div>
 
     <div className={styles.goalNumber}>
-      {DAILY_WATER_TARGET}
+      {target}
       <span className={styles.goalUnit}>
         杯水
       </span>
@@ -329,13 +397,66 @@ export default function Home() {
       </span>
 
       <span>
-        目標 {DAILY_WATER_TARGET} 杯
+        目標 {target} 杯
       </span>
     </div>
 
     <p className={styles.encourage}>
       繼續加油，離目標又更近一步了！
     </p>
+  </div>
+
+  <div className={styles.targetSetting}>
+    <label className={styles.targetCheckbox}>
+      <input
+        type="checkbox"
+        checked={useCustomTarget}
+        onChange={async (e) => {
+          const checked = e.target.checked;
+
+          setUseCustomTarget(checked);
+
+          if (!checked) {
+            setCustomTarget("");
+          }
+
+          await saveUserTarget(
+            checked,
+            checked ? customTarget : ""
+          );
+        }}
+      />
+
+      我要自訂目標：
+    </label>
+
+    <input
+      type="number"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      min={1}
+      className={styles.targetInput}
+      disabled={!useCustomTarget}
+      value={customTarget}
+      onChange={(e) =>
+        setCustomTarget(
+          e.target.value.replace(
+            /\D/g,
+            ""
+          )
+        )
+      }
+      onBlur={async () => {
+        await saveUserTarget(
+          useCustomTarget,
+          customTarget
+        );
+      }}
+    />
+
+    <span className={styles.targetUnit}>
+      杯
+    </span>
   </div>
 
   {user && (
@@ -538,7 +659,7 @@ export default function Home() {
   <div className={styles.goalLabel}>
     目標{" "}
     <span className={styles.goalHighlight}>
-      {DAILY_WATER_TARGET}
+      {target}
     </span>
     杯 / 天
   </div>
