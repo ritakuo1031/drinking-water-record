@@ -300,6 +300,22 @@ export default function HistoryPage() {
 
     const scatterTicks = [];
 
+    const horizontalPoints = [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+    ];
+
     const scatterLabels: Record<
       number,
       string
@@ -493,6 +509,7 @@ export default function HistoryPage() {
                 stroke="#f6cfd8"
                 strokeDasharray="6 6"
                 vertical={false}
+                horizontalPoints={horizontalPoints}
               />
             <XAxis
               type="number"
