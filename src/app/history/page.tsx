@@ -848,9 +848,9 @@ export default function HistoryPage() {
                 <BarChart
                   data={dailyChartData}
                   margin={{
-                    top: 20,
+                    top: 15,
                     right: 10,
-                    left: 0,
+                    left: 15,
                     bottom: -10,
                   }}
                 >
@@ -1050,8 +1050,8 @@ export default function HistoryPage() {
             </span>
 
             {showMl
-              ? " ml / 天"
-              : " 杯 / 天"}
+              ? "ml / 天"
+              : "杯 / 天"}
           </div>
 
         </div>
