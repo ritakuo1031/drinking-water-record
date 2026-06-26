@@ -313,12 +313,12 @@
   /* 歷史紀錄按鈕 */
 
   .historyButton {
-    margin-top: 40px;
+    margin-top: 32px;
   
     width: 100%;
-    max-width: 700px;
+    max-width: 600px;
   
-    height: 100px;
+    height: 90px;
   
     background: linear-gradient(
       135deg,
@@ -326,7 +326,7 @@
       #f3a2bc
     );
   
-    border-radius: 32px;
+    border-radius: 28px;
   
     display: flex;
     align-items: center;
@@ -334,13 +334,13 @@
   
     color: white;
   
-    font-size: 32px;
+    font-size: 30px;
   
     font-weight: 700;
   
     text-decoration: none;
   
-    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
   }
 
   /* 登入帳號 */

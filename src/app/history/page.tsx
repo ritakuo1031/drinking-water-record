@@ -288,6 +288,16 @@ export default function HistoryPage() {
   const timeYAxisMax =
     Math.ceil((maxTimeCount + 1) / 2) * 2;
   
+  const timeTicks = [];
+
+  for (
+    let i = 0;
+    i <= timeYAxisMax;
+    i++
+  ) {
+    timeTicks.push(i);
+  }
+
     const scatterTicks = [];
 
     const scatterLabels: Record<
@@ -548,6 +558,8 @@ export default function HistoryPage() {
                 22,
                 24,
               ]}
+              interval={0}
+              allowDataOverflow
               tickFormatter={(value) =>
                 `${String(value)
                   .padStart(2, "0")}:00`
@@ -669,7 +681,8 @@ export default function HistoryPage() {
 
                 <YAxis
                   domain={[0, timeYAxisMax]}
-                  tickCount={6}
+                  ticks={timeTicks}
+                  allowDecimals={false}
                   width={30}
                   tick={{
                     fill: "#a58b77",
@@ -856,6 +869,7 @@ export default function HistoryPage() {
                   <YAxis
                     domain={[0, yAxisMax]}
                     tickCount={6}
+                    allowDecimals={false}
                     width={30}
                     tick={{
                       fill: "#a58b77",
