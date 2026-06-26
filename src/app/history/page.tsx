@@ -542,7 +542,7 @@ export default function HistoryPage() {
             <YAxis
               dataKey="time"
               type="number"
-              domain={[0, 25]}
+              domain={[0, 24.5]}
               ticks={[
                 0,
                 2,
