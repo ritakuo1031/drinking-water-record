@@ -743,66 +743,50 @@ export default function HistoryPage() {
 
         <div className={styles.chartCard}>
           <div className={styles.dailyHeader}>
+            <h2 className={styles.cardTitle}>
+              每日喝水杯數
+            </h2>
+          </div>
 
-            <div>
-
-              <h2 className={styles.cardTitle}>
-                每日喝水杯數
-              </h2>
-
-              <div className={styles.chartSubTitle}>
-                單位：杯
-              </div>
-
+          <div className={styles.dailyToolbar}>
+            <div className={styles.chartSubTitle}>
+              單位：
+              {showMl ? "ml" : "杯"}
             </div>
 
             <div className={styles.unitSetting}>
-
-              <div className={styles.cupMlRow}>
+              <div className={styles.mlInputRow}>
                 <span>1杯 =</span>
 
                 <input
                   type="number"
                   inputMode="numeric"
                   pattern="[0-9]*"
-                  min={1}
+                  className={styles.mlInput}
                   value={cupMl}
                   onChange={(e) =>
                     setCupMl(
-                      e.target.value.replace(
-                        /\D/g,
-                        ""
-                      )
+                      e.target.value.replace(/\D/g, "")
                     )
                   }
-                  className={styles.cupMlInput}
                 />
 
                 <span>ml</span>
-
               </div>
 
               <label className={styles.switch}>
-
                 <input
                   type="checkbox"
                   checked={showMl}
                   disabled={!cupMl}
-                  onChange={(e)=>
-                    setShowMl(
-                      e.target.checked
-                    )
+                  onChange={(e) =>
+                    setShowMl(e.target.checked)
                   }
                 />
 
-                <span
-                  className={styles.slider}
-                />
-
+                <span className={styles.slider}></span>
               </label>
-
             </div>
-
           </div>
 
           <div className={styles.chartScroll}>
