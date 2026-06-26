@@ -57,7 +57,13 @@ export default function HistoryPage() {
     setScatterData] =
     useState<any[]>([]);
 
-  const loadWaterLogs = async () => {
+  const [cupMl, setCupMl] =
+    useState("");
+  
+  const [showMl, setShowMl] =
+    useState(false);
+  
+    const loadWaterLogs = async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -736,12 +742,67 @@ export default function HistoryPage() {
         </div>
 
         <div className={styles.chartCard}>
-          <h2 className={styles.cardTitle}>
-            每日喝水杯數
-          </h2>
+          <div className={styles.dailyHeader}>
 
-          <div className={styles.chartSubTitle}>
-            單位：杯
+            <div>
+
+              <h2 className={styles.cardTitle}>
+                每日喝水杯數
+              </h2>
+
+              <div className={styles.chartSubTitle}>
+                單位：杯
+              </div>
+
+            </div>
+
+            <div className={styles.unitSetting}>
+
+              <div className={styles.cupMlRow}>
+                <span>1杯 =</span>
+
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  min={1}
+                  value={cupMl}
+                  onChange={(e) =>
+                    setCupMl(
+                      e.target.value.replace(
+                        /\D/g,
+                        ""
+                      )
+                    )
+                  }
+                  className={styles.cupMlInput}
+                />
+
+                <span>ml</span>
+
+              </div>
+
+              <label className={styles.switch}>
+
+                <input
+                  type="checkbox"
+                  checked={showMl}
+                  disabled={!cupMl}
+                  onChange={(e)=>
+                    setShowMl(
+                      e.target.checked
+                    )
+                  }
+                />
+
+                <span
+                  className={styles.slider}
+                />
+
+              </label>
+
+            </div>
+
           </div>
 
           <div className={styles.chartScroll}>

@@ -179,8 +179,122 @@
     transition: 0.4s;
   }
 
-  /* 每日喝水杯數長條圖 */
+  /* 每日喝水杯數單位切換 */
 
+  .dailyHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:18px;
+  }
+
+  .unitSetting{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:10px;
+  }
+
+  .cupMlRow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  
+    color:#a58b77;
+    font-size:15px;
+    font-weight:600;
+  }
+
+  .cupMlInput{
+    width:70px;
+  
+    height:36px;
+  
+    text-align:center;
+  
+    border-radius:12px;
+  
+    border:2px solid #f3dbe3;
+  
+    background:white;
+  
+    font-size:16px;
+  
+    font-weight:700;
+  
+    color:#a58b77;
+  }
+
+  .switch{
+    position:relative;
+  
+    display:inline-block;
+  
+    width:46px;
+  
+    height:26px;
+  }
+
+  .switch input{
+    opacity:0;
+    width:0;
+    height:0;
+  }
+
+  .slider{
+    position:absolute;
+  
+    cursor:pointer;
+  
+    inset:0;
+  
+    background:#d9dde7;
+  
+    transition:.25s;
+  
+    border-radius:999px;
+  }
+
+  .slider::before{
+
+    content:"";
+  
+    position:absolute;
+  
+    width:20px;
+  
+    height:20px;
+  
+    left:3px;
+  
+    top:3px;
+  
+    background:white;
+  
+    border-radius:50%;
+  
+    transition:.25s;
+  }
+
+  .switch input:checked + .slider{
+
+    background:#e36b9a;
+  }
+
+  .switch input:checked + .slider::before{
+
+    transform:translateX(20px);
+  }
+
+  .switch input:disabled + .slider{
+
+    opacity:.45;
+  
+    cursor:not-allowed;
+  }
+
+  /* 每日喝水杯數長條圖 */
+  
   .chartCard {
     background: #fffdf8;
   
