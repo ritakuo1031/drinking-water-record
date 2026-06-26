@@ -11,7 +11,7 @@ import {
   CartesianGrid,
   Cell,
   LabelList,
-  ScatterChart,
+  ComposedChart,
   Scatter,
 } from "recharts";
 
@@ -513,7 +513,7 @@ export default function HistoryPage() {
               width="100%"
               height={400}
             >
-            <ScatterChart
+            <ComposedChart
               data={scatterData}
               margin={{
                 top: 35,
@@ -560,6 +560,8 @@ export default function HistoryPage() {
                   ? scatterTicks
                   : [0]
               }
+              interval={0}
+              allowDecimals={false}
               tick={({ x, y, payload }) => {
                 const label =
                   scatterLabels[payload.value] ??
@@ -610,6 +612,7 @@ export default function HistoryPage() {
                 24,
               ]}
               interval={0}
+              allowDecimals={false}
               tickFormatter={(value) =>
                 `${String(value)
                   .padStart(2, "0")}:00`
@@ -621,17 +624,7 @@ export default function HistoryPage() {
               }}
             />
             <Scatter
-              data={
-                scatterData.length > 0
-                  ? scatterData
-                  : [
-                      {
-                        dayIndex: -999,
-                        time: 0,
-                        hidden: true,
-                      },
-                    ]
-              }
+              data={scatterData}
               isAnimationActive={false}
               shape={(props: any) => {
                 const {
@@ -639,10 +632,6 @@ export default function HistoryPage() {
                   cy,
                   payload,
                 } = props;
-
-                if (payload.hidden) {
-                  return null;
-                }
 
                 return (
                   <circle
@@ -663,7 +652,7 @@ export default function HistoryPage() {
                 );
               }}
             />
-            </ScatterChart>
+            </ComposedChart>
             </ResponsiveContainer>
             </div>
             </div>
