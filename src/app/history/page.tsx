@@ -848,9 +848,9 @@ export default function HistoryPage() {
                 <BarChart
                   data={dailyChartData}
                   margin={{
-                    top: 15,
+                    top: 25,
                     right: 10,
-                    left: 15,
+                    left: 25,
                     bottom: -10,
                   }}
                 >
