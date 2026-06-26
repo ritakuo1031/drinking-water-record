@@ -62,6 +62,8 @@ export default function HistoryPage() {
   
   const [showMl, setShowMl] =
     useState(false);
+
+  const [userId, setUserId] = useState("");
   
   const cupMlNumber = Number(cupMl || 0);
 
@@ -76,8 +78,34 @@ export default function HistoryPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
+    if (user) {
+      setUserId(user.id);
+    }
   
     if (!user) return;
+
+    const { data: profile } =
+      await supabase
+        .from("profiles")
+        .select(`
+          cup_ml,
+          show_ml
+        `)
+        .eq("id", user.id)
+        .single();
+
+    if (profile) {
+      setCupMl(
+        profile.cup_ml
+          ? String(profile.cup_ml)
+          : ""
+      );
+
+      setShowMl(
+        profile.show_ml ?? false
+      );
+    }
   
     const start = new Date(startDate);
     start.setHours(0, 0, 0, 0);
@@ -783,6 +811,17 @@ export default function HistoryPage() {
                       e.target.value.replace(/\D/g, "")
                     )
                   }
+                  onBlur={async () => {
+                    if (!userId) return;
+                  
+                    await supabase
+                      .from("profiles")
+                      .update({
+                        cup_ml:
+                          Number(cupMl) || 0,
+                      })
+                      .eq("id", userId);
+                  }}
                 />
 
                 <span>ml</span>
@@ -803,9 +842,20 @@ export default function HistoryPage() {
                     type="checkbox"
                     checked={showMl}
                     disabled={!cupMl}
-                    onChange={(e) =>
-                      setShowMl(e.target.checked)
-                    }
+                    onChange={async (e) => {
+                      const checked = e.target.checked;
+
+                      setShowMl(checked);
+
+                      if (!userId) return;
+
+                      await supabase
+                        .from("profiles")
+                        .update({
+                          show_ml: checked,
+                        })
+                        .eq("id", userId);
+                    }}
                   />
 
                   <span className={styles.slider}></span>
