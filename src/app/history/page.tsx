@@ -381,6 +381,10 @@ export default function HistoryPage() {
       index++;
     }
 
+    const emptyScatterData = scatterTicks.map((tick) => ({
+      dayIndex: tick,
+    }));
+
   const averageCount =
     dailyCounts.length > 0
       ? (
@@ -623,35 +627,43 @@ export default function HistoryPage() {
                 fontWeight: 600,
               }}
             />
-            <Scatter
-              data={scatterData}
-              isAnimationActive={false}
-              shape={(props: any) => {
-                const {
-                  cx,
-                  cy,
-                  payload,
-                } = props;
+            {scatterData.length > 0 ? (
+              <Scatter
+                data={scatterData}
+                isAnimationActive={false}
+                shape={(props: any) => {
+                  const {
+                    cx,
+                    cy,
+                    payload,
+                  } = props;
 
-                return (
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={5}
-                    fill={
-                      payload.isToday
-                        ? "#e36b9a"
-                        : "#84b8f0"
-                    }
-                    filter={
-                      payload.isToday
-                        ? "url(#scatterGlow)"
-                        : undefined
-                    }
-                  />
-                );
-              }}
-            />
+                  return (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={5}
+                      fill={
+                        payload.isToday
+                          ? "#e36b9a"
+                          : "#84b8f0"
+                      }
+                      filter={
+                        payload.isToday
+                          ? "url(#scatterGlow)"
+                          : undefined
+                      }
+                    />
+                  );
+                }}
+              />
+            ) : (
+              <Scatter
+                data={emptyScatterData}
+                shape={() => null}
+                isAnimationActive={false}
+              />
+            )}
             </ComposedChart>
             </ResponsiveContainer>
             </div>
