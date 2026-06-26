@@ -131,7 +131,7 @@
     font-weight: 700;
   }
   
-  /* 8杯水 */
+  /* 目標杯數 */
   
   .goalNumber {
     text-align: center;
@@ -244,7 +244,7 @@
     text-align:center;
     font-size:22px;
     font-weight:700;
-    color:#2563eb;
+    color:#E36B9A;
     background:white;
   }
 
