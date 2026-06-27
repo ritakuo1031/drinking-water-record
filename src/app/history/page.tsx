@@ -64,6 +64,27 @@ export default function HistoryPage() {
     useState(false);
 
   const [userId, setUserId] = useState("");
+
+  const [selectedGroup, setSelectedGroup] =
+    useState<any[] | null>(null);
+
+  const [cardPosition, setCardPosition] =
+    useState({
+      left: 0,
+      top: 0,
+    });
+
+  const [scatterPointPositions, setScatterPointPositions] =
+    useState<
+      Record<
+        string,
+        {
+          cx: number;
+          cy: number;
+          payload: any;
+        }
+      >
+    >({});
   
   const cupMlNumber = Number(cupMl || 0);
 
@@ -75,6 +96,7 @@ export default function HistoryPage() {
   }));
 
     const loadWaterLogs = async () => {
+      setScatterPointPositions({});
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -293,6 +315,8 @@ export default function HistoryPage() {
         ).padStart(2, "0")}`;
 
       return {
+        id: log.created_at,
+
         dayIndex,
   
         time:
@@ -300,6 +324,14 @@ export default function HistoryPage() {
           date.getMinutes() / 60,
   
         dateLabel,
+
+        displayDate: dateLabel,
+
+        displayTime:
+          `${String(date.getHours()).padStart(2, "0")}:` +
+          `${String(date.getMinutes()).padStart(2, "0")}`,
+
+        created_at: log.created_at,
   
         isToday:
           dateLabel === todayLabel,
@@ -566,6 +598,7 @@ export default function HistoryPage() {
 
           <div className={styles.chartScroll}>
             <div
+              className={styles.chartWrapper}
               style={{
                 width: `${Math.max(
                   ((new Date(endDate).getTime() -
@@ -577,167 +610,229 @@ export default function HistoryPage() {
                 )}px`,
                 height: "420px",
               }}
+              onClick={() => setSelectedGroup(null)}
             >
-            <ResponsiveContainer
-              width="100%"
-              height={400}
-            >
-            <ComposedChart
-              data={scatterData}
-              margin={{
-                top: 35,
-                right: 20,
-                left: -5,
-                bottom: 0,
-              }}
-            >
-              <defs>
-                <filter
-                  id="scatterGlow"
-                  x="-50%"
-                  y="-50%"
-                  width="200%"
-                  height="200%"
+
+              <ResponsiveContainer
+                width="100%"
+                height={400}
+              >
+                <ComposedChart
+                  data={scatterData}
+                  margin={{
+                    top: 35,
+                    right: 20,
+                    left: -5,
+                    bottom: 0,
+                  }}
                 >
-                  <feDropShadow
-                    dx="0"
-                    dy="0"
-                    stdDeviation="2"
-                    floodColor="#e36b9a"
-                    floodOpacity="0.5"
+                  <defs>
+                    <filter
+                      id="scatterGlow"
+                      x="-50%"
+                      y="-50%"
+                      width="200%"
+                      height="200%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="0"
+                        stdDeviation="2"
+                        floodColor="#e36b9a"
+                        floodOpacity="0.5"
+                      />
+                    </filter>
+                  </defs>
+
+                  <CartesianGrid
+                    stroke="#f6cfd8"
+                    strokeDasharray="6 6"
+                    vertical={false}
                   />
-                </filter>
-              </defs>
 
-              <CartesianGrid
-                stroke="#f6cfd8"
-                strokeDasharray="6 6"
-                vertical={false}
-              />
-            <XAxis
-              type="number"
-              dataKey="dayIndex"
-              domain={[
-                -0.5,
-                Math.max(
-                  scatterTicks.length - 0.5,
-                  0.5
-                ),
-              ]}
-              ticks={
-                scatterTicks.length > 0
-                  ? scatterTicks
-                  : [0]
-              }
-              interval={0}
-              allowDecimals={false}
-              tick={({ x, y, payload }) => {
-                const label =
-                  scatterLabels[payload.value] ??
-                  "";
-
-                const isToday =
-                  label === todayLabel;
-
-                return (
-                  <text
-                    x={Number(x)}
-                    y={Number(y) + 15}
-                    textAnchor="middle"
-                    fill={
-                      isToday
-                        ? "#e36b9a"
-                        : "#a58b77"
+                  <XAxis
+                    type="number"
+                    dataKey="dayIndex"
+                    domain={[
+                      -0.5,
+                      Math.max(
+                        scatterTicks.length - 0.5,
+                        0.5
+                      ),
+                    ]}
+                    ticks={
+                      scatterTicks.length > 0
+                        ? scatterTicks
+                        : [0]
                     }
-                    fontSize="14"
-                    fontWeight={
-                      isToday
-                        ? "800"
-                        : "600"
+                    interval={0}
+                    allowDecimals={false}
+                    tick={({ x, y, payload }) => {
+                      const label =
+                        scatterLabels[payload.value] ??
+                        "";
+
+                      const isToday =
+                        label === todayLabel;
+
+                      return (
+                        <text
+                          x={Number(x)}
+                          y={Number(y) + 15}
+                          textAnchor="middle"
+                          fill={
+                            isToday
+                              ? "#e36b9a"
+                              : "#a58b77"
+                          }
+                          fontSize="14"
+                          fontWeight={
+                            isToday
+                              ? "800"
+                              : "600"
+                          }
+                        >
+                          {label}
+                        </text>
+                      );
+                    }}
+                  />
+                  <YAxis
+                    dataKey="time"
+                    type="number"
+                    domain={[0, 24]}
+                    ticks={[
+                      0,
+                      2,
+                      4,
+                      6,
+                      8,
+                      10,
+                      12,
+                      14,
+                      16,
+                      18,
+                      20,
+                      22,
+                      24,
+                    ]}
+                    interval={0}
+                    allowDecimals={false}
+                    tickFormatter={(value) =>
+                      `${String(value)
+                        .padStart(2, "0")}:00`
                     }
-                  >
-                    {label}
-                  </text>
-                );
-              }}
-            />
-            <YAxis
-              dataKey="time"
-              type="number"
-              domain={[0, 24]}
-              ticks={[
-                0,
-                2,
-                4,
-                6,
-                8,
-                10,
-                12,
-                14,
-                16,
-                18,
-                20,
-                22,
-                24,
-              ]}
-              interval={0}
-              allowDecimals={false}
-              tickFormatter={(value) =>
-                `${String(value)
-                  .padStart(2, "0")}:00`
-              }
-              tick={{
-                fill: "#a58b77",
-                fontSize: 14,
-                fontWeight: 600,
-              }}
-            />
-            {scatterData.length > 0 ? (
-              <Scatter
-                data={scatterData}
-                isAnimationActive={false}
-                shape={(props: any) => {
-                  const {
-                    cx,
-                    cy,
-                    payload,
-                  } = props;
+                    tick={{
+                      fill: "#a58b77",
+                      fontSize: 14,
+                      fontWeight: 600,
+                    }}
+                  />
+                  {scatterData.length > 0 ? (
+                    <Scatter
+                      data={scatterData}
+                      isAnimationActive={false}
+                      shape={(props: any) => {
+                        const {
+                          cx,
+                          cy,
+                          payload,
+                        } = props;
 
-                  if (payload.hidden) {
-                    return null;
-                  }
+                        if (
+                          payload.id &&
+                          (
+                            !scatterPointPositions[payload.id] ||
+                            scatterPointPositions[payload.id].cx !== Number(cx) ||
+                            scatterPointPositions[payload.id].cy !== Number(cy)
+                          )
+                        ) {
+                          setTimeout(() => {
+                            setScatterPointPositions((prev) => ({
+                              ...prev,
+                              [payload.id]: {
+                                cx: Number(cx),
+                                cy: Number(cy),
+                                payload,
+                              },
+                            }));
+                          }, 0);
+                        }
 
-                  return (
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={5}
-                      fill={
-                        payload.isToday
-                          ? "#e36b9a"
-                          : "#84b8f0"
-                      }
-                      filter={
-                        payload.isToday
-                          ? "url(#scatterGlow)"
-                          : undefined
-                      }
+                        if (payload.hidden) {
+                          return null;
+                        }
+
+                        return (
+                          <circle
+                            cx={cx}
+                            cy={cy}
+                            r={5}
+                            fill={
+                              payload.isToday
+                                ? "#e36b9a"
+                                : "#84b8f0"
+                            }
+                            filter={
+                              payload.isToday
+                                ? "url(#scatterGlow)"
+                                : undefined
+                            }
+
+                            onClick={(e) => {
+                              e.stopPropagation();
+                      
+                              setSelectedGroup([payload]);
+                      
+                              setCardPosition({
+                                left: Number(cx) + 12,
+                                top: Number(cy) - 12,
+                              });
+
+                              console.log(scatterPointPositions);
+                            }}
+                      
+                            style={{
+                              cursor: "pointer",
+                            }}
+                          />
+                        );
+                      }}
                     />
-                  );
-                }}
-              />
-            ) : (
-              <Scatter
-                data={emptyScatterData}
-                shape={() => null}
-                isAnimationActive={false}
-              />
-            )}
-            </ComposedChart>
-            </ResponsiveContainer>
+                  ) : (
+                    <Scatter
+                      data={emptyScatterData}
+                      shape={() => null}
+                      isAnimationActive={false}
+                    />
+                  )}
+                </ComposedChart>
+              </ResponsiveContainer>
+
+              {selectedGroup && (
+                <div
+                  className={styles.pointCard}
+                  style={{
+                    left: cardPosition.left,
+                    top: cardPosition.top,
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {selectedGroup.map((item) => (
+                    <div
+                      key={item.created_at}
+                      className={styles.pointTime}
+                    >
+                      {item.displayDate}
+                      {" "}
+                      {item.displayTime}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            </div>
-            </div>
+          </div>
+        </div>
   
         <div className={styles.chartCard}>
           <h2 className={styles.cardTitle}>
