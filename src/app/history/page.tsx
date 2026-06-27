@@ -901,9 +901,8 @@ export default function HistoryPage() {
                       key={item.created_at}
                       className={styles.pointTime}
                     >
-                      <div>{item.displayDate}</div>
-
-                      <div>{item.displayTime}</div>
+                      {item.displayDate}{" "}
+                      {item.displayTime}
                     </div>
                   ))}
                 </div>

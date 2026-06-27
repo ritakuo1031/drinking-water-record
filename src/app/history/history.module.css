@@ -194,9 +194,9 @@
 
     transform:translateY(-50%);
   
-    min-width:160px;
+    min-width:150px;
 
-    max-width: 220px;
+    max-width: 180px;
   
     background:#fff;
   
@@ -234,7 +234,7 @@
   .pointTime{
     color:#a58b77;
   
-    font-size:15px;
+    font-size:16px;
   
     font-weight:700;
   
