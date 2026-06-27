@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 
 import {
   ResponsiveContainer,
@@ -20,6 +24,21 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 import styles from "./history.module.css";
+
+const formatAmPm = (date: Date) => {
+  const hour = date.getHours();
+  const minute = String(date.getMinutes()).padStart(2, "0");
+
+  const period =
+    hour < 12 ? "上午" : "下午";
+
+  const displayHour =
+    hour % 12 === 0
+      ? 12
+      : hour % 12;
+
+  return `${period}${String(displayHour).padStart(2, "0")}:${minute}`;
+};
 
 export default function HistoryPage() {
   const [showDateFilter, setShowDateFilter] =
@@ -74,8 +93,8 @@ export default function HistoryPage() {
       top: 0,
     });
 
-  const [scatterPointPositions, setScatterPointPositions] =
-    useState<
+  const scatterPointPositionsRef =
+    useRef<
       Record<
         string,
         {
@@ -96,7 +115,7 @@ export default function HistoryPage() {
   }));
 
     const loadWaterLogs = async () => {
-      setScatterPointPositions({});
+      scatterPointPositionsRef.current = {};
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -269,6 +288,20 @@ export default function HistoryPage() {
     );
   };
 
+  const formatDisplayTime = (date: Date) => {
+    const hour = date.getHours();
+    const minute = String(date.getMinutes()).padStart(2, "0");
+  
+    const period = hour < 12 ? "上午" : "下午";
+  
+    const displayHour =
+      hour % 12 === 0
+        ? 12
+        : hour % 12;
+  
+    return `${period}${String(displayHour).padStart(2, "0")}:${minute}`;
+  };
+
   const buildScatterData = (
     logs: any[]
   ) => {
@@ -327,9 +360,7 @@ export default function HistoryPage() {
 
         displayDate: dateLabel,
 
-        displayTime:
-          `${String(date.getHours()).padStart(2, "0")}:` +
-          `${String(date.getMinutes()).padStart(2, "0")}`,
+        displayTime: formatDisplayTime(date),
 
         created_at: log.created_at,
   
@@ -739,24 +770,14 @@ export default function HistoryPage() {
                           payload,
                         } = props;
 
-                        if (
-                          payload.id &&
-                          (
-                            !scatterPointPositions[payload.id] ||
-                            scatterPointPositions[payload.id].cx !== Number(cx) ||
-                            scatterPointPositions[payload.id].cy !== Number(cy)
-                          )
-                        ) {
-                          setTimeout(() => {
-                            setScatterPointPositions((prev) => ({
-                              ...prev,
-                              [payload.id]: {
-                                cx: Number(cx),
-                                cy: Number(cy),
-                                payload,
-                              },
-                            }));
-                          }, 0);
+                        if (payload.id) {
+                          scatterPointPositionsRef.current[
+                            payload.id
+                          ] = {
+                            cx: Number(cx),
+                            cy: Number(cy),
+                            payload,
+                          };
                         }
 
                         if (payload.hidden) {
@@ -789,7 +810,7 @@ export default function HistoryPage() {
                                 top: Number(cy) - 12,
                               });
 
-                              console.log(scatterPointPositions);
+                              console.log(scatterPointPositionsRef.current);
                             }}
                       
                             style={{
