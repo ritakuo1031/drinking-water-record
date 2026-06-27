@@ -112,6 +112,9 @@ export default function HistoryPage() {
         }
       >
     >({});
+
+  const chartWrapperRef =
+    useRef<HTMLDivElement>(null);
   
   const CARD_WIDTH = 170;
   const CARD_HEIGHT = 62;
@@ -698,6 +701,7 @@ export default function HistoryPage() {
 
           <div className={styles.chartScroll}>
             <div
+              ref={chartWrapperRef}
               className={styles.chartWrapper}
               style={{
                 width: `${Math.max(
@@ -874,10 +878,31 @@ export default function HistoryPage() {
                             
                               setSelectedGroup([payload]);
                             
-                              const result = calculateCardPosition(
-                                Number(cx),
-                                Number(cy)
-                              );
+                              if (!chartWrapperRef.current) return;
+
+                                const wrapperRect =
+                                  chartWrapperRef.current.getBoundingClientRect();
+
+                                const circleRect =
+                                  (
+                                    e.currentTarget as SVGCircleElement
+                                  ).getBoundingClientRect();
+
+                                const anchorX =
+                                  circleRect.left -
+                                  wrapperRect.left +
+                                  circleRect.width / 2;
+
+                                const anchorY =
+                                  circleRect.top -
+                                  wrapperRect.top +
+                                  circleRect.height / 2;
+
+                                const result =
+                                  calculateCardPosition(
+                                    anchorX,
+                                    anchorY
+                                  );
                             
                               setCardDirection(result.direction);
                             
