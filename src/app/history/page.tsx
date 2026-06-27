@@ -93,6 +93,14 @@ export default function HistoryPage() {
       top: 0,
     });
 
+  const [cardDirection, setCardDirection] =
+    useState<
+      "top-right" |
+      "top-left" |
+      "bottom-right" |
+      "bottom-left"
+    >("top-right");
+
   const scatterPointPositionsRef =
     useRef<
       Record<
@@ -105,6 +113,10 @@ export default function HistoryPage() {
       >
     >({});
   
+  const CARD_WIDTH = 170;
+  const CARD_HEIGHT = 62;
+  const OFFSET = 14;
+
   const cupMlNumber = Number(cupMl || 0);
 
   const dailyChartData = dailyCounts.map((item) => ({
@@ -300,6 +312,63 @@ export default function HistoryPage() {
         : hour % 12;
   
     return `${period}${String(displayHour).padStart(2, "0")}:${minute}`;
+  };
+
+  const calculateCardPosition = (
+    cx: number,
+    cy: number
+  ) => {
+    const chartWidth = Math.max(
+      ((new Date(endDate).getTime() -
+        new Date(startDate).getTime()) /
+        (1000 * 60 * 60 * 24) +
+        1) *
+        70,
+      450
+    );
+  
+    const chartHeight = 400;
+  
+    let left = cx + OFFSET;
+    let top = cy - CARD_HEIGHT - OFFSET;
+  
+    let direction:
+      | "top-right"
+      | "top-left"
+      | "bottom-right"
+      | "bottom-left" = "top-right";
+  
+    // 右邊放不下 → 左邊
+    if (left + CARD_WIDTH > chartWidth - 8) {
+      left = cx - CARD_WIDTH - OFFSET;
+      direction = "top-left";
+    }
+  
+    // 上面放不下 → 下面
+    if (top < 8) {
+      top = cy + OFFSET;
+  
+      direction =
+        direction === "top-left"
+          ? "bottom-left"
+          : "bottom-right";
+    }
+  
+    // 左邊超出
+    if (left < 8) {
+      left = 8;
+    }
+  
+    // 下面超出
+    if (top + CARD_HEIGHT > chartHeight - 8) {
+      top = chartHeight - CARD_HEIGHT - 8;
+    }
+  
+    return {
+      left,
+      top,
+      direction,
+    };
   };
 
   const buildScatterData = (
@@ -802,14 +871,21 @@ export default function HistoryPage() {
 
                             onClick={(e) => {
                               e.stopPropagation();
-                      
+                            
                               setSelectedGroup([payload]);
-                      
+                            
+                              const result = calculateCardPosition(
+                                Number(cx),
+                                Number(cy)
+                              );
+                            
+                              setCardDirection(result.direction);
+                            
                               setCardPosition({
-                                left: Number(cx) + 12,
-                                top: Number(cy) - 12,
+                                left: result.left,
+                                top: result.top,
                               });
-
+                            
                               console.log(scatterPointPositionsRef.current);
                             }}
                       
