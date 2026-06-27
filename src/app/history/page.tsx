@@ -112,7 +112,10 @@ export default function HistoryPage() {
     useRef<HTMLDivElement>(null);
   
     const pointCardRef =
-    useRef<HTMLDivElement>(null);
+      useRef<HTMLDivElement>(null);
+
+    const selectedPointIdRef =
+      useRef<string | null>(null);
 
   const cupMlNumber = Number(cupMl || 0);
 
@@ -316,6 +319,14 @@ export default function HistoryPage() {
     payload: any
   ) => {
     e.stopPropagation();
+    if (
+      selectedPointIdRef.current === payload.id
+    ) {
+      hidePointCard();
+      return;
+    }
+
+    selectedPointIdRef.current = payload.id;
   
     setSelectedGroup([payload]);
   
@@ -361,6 +372,17 @@ export default function HistoryPage() {
     });
   };
   
+  const hidePointCard = () => {
+    selectedPointIdRef.current = null;
+  
+    setSelectedGroup(null);
+  
+    setCardPosition({
+      left: 0,
+      top: 0,
+    });
+  };
+
   const buildScatterData = (
     logs: any[]
   ) => {
@@ -701,7 +723,7 @@ export default function HistoryPage() {
                 )}px`,
                 height: "420px",
               }}
-              onClick={() => setSelectedGroup(null)}
+              onClick={hidePointCard}
             >
 
               <ResponsiveContainer
