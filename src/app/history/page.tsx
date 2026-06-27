@@ -94,12 +94,7 @@ export default function HistoryPage() {
     });
 
   const [cardDirection, setCardDirection] =
-    useState<
-      "top-right" |
-      "top-left" |
-      "bottom-right" |
-      "bottom-left"
-    >("top-right");
+    useState<"left" | "right">("right");
 
   const scatterPointPositionsRef =
     useRef<
@@ -116,9 +111,8 @@ export default function HistoryPage() {
   const chartWrapperRef =
     useRef<HTMLDivElement>(null);
   
-  const CARD_WIDTH = 170;
-  const CARD_HEIGHT = 62;
-  const OFFSET = 14;
+    const pointCardRef =
+    useRef<HTMLDivElement>(null);
 
   const cupMlNumber = Number(cupMl || 0);
 
@@ -317,63 +311,56 @@ export default function HistoryPage() {
     return `${period}${String(displayHour).padStart(2, "0")}:${minute}`;
   };
 
-  const calculateCardPosition = (
-    cx: number,
-    cy: number
+  const showPointCard = (
+    e: React.MouseEvent<SVGCircleElement>,
+    payload: any
   ) => {
-    const chartWidth = Math.max(
-      ((new Date(endDate).getTime() -
-        new Date(startDate).getTime()) /
-        (1000 * 60 * 60 * 24) +
-        1) *
-        70,
-      450
-    );
+    e.stopPropagation();
   
-    const chartHeight = 400;
+    setSelectedGroup([payload]);
   
-    let left = cx + OFFSET;
-    let top = cy - CARD_HEIGHT - OFFSET;
+    if (!chartWrapperRef.current) return;
   
-    let direction:
-      | "top-right"
-      | "top-left"
-      | "bottom-right"
-      | "bottom-left" = "top-right";
+    const wrapperRect =
+      chartWrapperRef.current.getBoundingClientRect();
   
-    // 右邊放不下 → 左邊
-    if (left + CARD_WIDTH > chartWidth - 8) {
-      left = cx - CARD_WIDTH - OFFSET;
-      direction = "top-left";
+    const circleRect =
+      (
+        e.currentTarget as SVGCircleElement
+      ).getBoundingClientRect();
+  
+    const anchorX =
+      circleRect.left -
+      wrapperRect.left +
+      circleRect.width / 2;
+  
+    const anchorY =
+      circleRect.top -
+      wrapperRect.top +
+      circleRect.height / 2;
+  
+    const OFFSET = 16;
+  
+    const estimatedWidth =
+      pointCardRef.current?.offsetWidth ?? 170;
+  
+    let direction: "left" | "right" = "right";
+  
+    if (
+      anchorX + OFFSET + estimatedWidth >
+      wrapperRect.width
+    ) {
+      direction = "left";
     }
   
-    // 上面放不下 → 下面
-    if (top < 8) {
-      top = cy + OFFSET;
+    setCardDirection(direction);
   
-      direction =
-        direction === "top-left"
-          ? "bottom-left"
-          : "bottom-right";
-    }
-  
-    // 左邊超出
-    if (left < 8) {
-      left = 8;
-    }
-  
-    // 下面超出
-    if (top + CARD_HEIGHT > chartHeight - 8) {
-      top = chartHeight - CARD_HEIGHT - 8;
-    }
-  
-    return {
-      left,
-      top,
-      direction,
-    };
+    setCardPosition({
+      left: anchorX,
+      top: anchorY,
+    });
   };
-
+  
   const buildScatterData = (
     logs: any[]
   ) => {
@@ -719,7 +706,7 @@ export default function HistoryPage() {
 
               <ResponsiveContainer
                 width="100%"
-                height={400}
+                height={420}
               >
                 <ComposedChart
                   data={scatterData}
@@ -842,7 +829,7 @@ export default function HistoryPage() {
                           cy,
                           payload,
                         } = props;
-
+                      
                         if (payload.id) {
                           scatterPointPositionsRef.current[
                             payload.id
@@ -852,11 +839,11 @@ export default function HistoryPage() {
                             payload,
                           };
                         }
-
+                      
                         if (payload.hidden) {
                           return null;
                         }
-
+                      
                         return (
                           <circle
                             cx={cx}
@@ -872,51 +859,12 @@ export default function HistoryPage() {
                                 ? "url(#scatterGlow)"
                                 : undefined
                             }
-
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            
-                              setSelectedGroup([payload]);
-                            
-                              if (!chartWrapperRef.current) return;
-
-                                const wrapperRect =
-                                  chartWrapperRef.current.getBoundingClientRect();
-
-                                const circleRect =
-                                  (
-                                    e.currentTarget as SVGCircleElement
-                                  ).getBoundingClientRect();
-
-                                const anchorX =
-                                  circleRect.left -
-                                  wrapperRect.left +
-                                  circleRect.width / 2;
-
-                                const anchorY =
-                                  circleRect.top -
-                                  wrapperRect.top +
-                                  circleRect.height / 2;
-
-                                const result =
-                                  calculateCardPosition(
-                                    anchorX,
-                                    anchorY
-                                  );
-                            
-                              setCardDirection(result.direction);
-                            
-                              setCardPosition({
-                                left: result.left,
-                                top: result.top,
-                              });
-                            
-                              console.log(scatterPointPositionsRef.current);
-                            }}
-                      
                             style={{
                               cursor: "pointer",
                             }}
+                            onClick={(e) =>
+                              showPointCard(e, payload)
+                            }
                           />
                         );
                       }}
@@ -933,7 +881,15 @@ export default function HistoryPage() {
 
               {selectedGroup && (
                 <div
-                  className={styles.pointCard}
+                  ref={pointCardRef}
+                  className={`
+                    ${styles.pointCard}
+                    ${
+                      cardDirection === "left"
+                        ? styles.cardLeft
+                        : styles.cardRight
+                    }
+                  `}
                   style={{
                     left: cardPosition.left,
                     top: cardPosition.top,
@@ -945,9 +901,9 @@ export default function HistoryPage() {
                       key={item.created_at}
                       className={styles.pointTime}
                     >
-                      {item.displayDate}
-                      {" "}
-                      {item.displayTime}
+                      <div>{item.displayDate}</div>
+
+                      <div>{item.displayTime}</div>
                     </div>
                   ))}
                 </div>
