@@ -879,10 +879,10 @@ export default function HistoryPage() {
                               <circle
                                 cx={cx}
                                 cy={cy}
-                                r={9}
+                                r={6.2}
                                 fill="none"
                                 stroke="#F6C94C"
-                                strokeWidth={3}
+                                strokeWidth={1.4}
                               />
                             )}
 
@@ -903,9 +903,7 @@ export default function HistoryPage() {
                               style={{
                                 cursor: "pointer",
                               }}
-                              onClick={(e) =>
-                                showPointCard(e, payload)
-                              }
+                              onClick={(e) => showPointCard(e, payload)}
                             />
                           </>
                         );
