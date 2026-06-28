@@ -87,6 +87,9 @@ export default function HistoryPage() {
   const [selectedGroup, setSelectedGroup] =
     useState<any[] | null>(null);
 
+  const [selectedPointId, setSelectedPointId] =
+    useState<string | null>(null);
+
   const [cardPosition, setCardPosition] =
     useState({
       left: 0,
@@ -328,6 +331,8 @@ export default function HistoryPage() {
 
     selectedPointIdRef.current = payload.id;
   
+    setSelectedPointId(payload.id);
+
     setSelectedGroup([payload]);
   
     if (!chartWrapperRef.current) return;
@@ -375,6 +380,8 @@ export default function HistoryPage() {
   const hidePointCard = () => {
     selectedPointIdRef.current = null;
   
+    setSelectedPointId(null);
+
     setSelectedGroup(null);
   
     setCardPosition({
@@ -867,27 +874,40 @@ export default function HistoryPage() {
                         }
                       
                         return (
-                          <circle
-                            cx={cx}
-                            cy={cy}
-                            r={5}
-                            fill={
-                              payload.isToday
-                                ? "#e36b9a"
-                                : "#84b8f0"
-                            }
-                            filter={
-                              payload.isToday
-                                ? "url(#scatterGlow)"
-                                : undefined
-                            }
-                            style={{
-                              cursor: "pointer",
-                            }}
-                            onClick={(e) =>
-                              showPointCard(e, payload)
-                            }
-                          />
+                          <>
+                            {selectedPointId === payload.id && (
+                              <circle
+                                cx={cx}
+                                cy={cy}
+                                r={9}
+                                fill="none"
+                                stroke="#F6C94C"
+                                strokeWidth={3}
+                              />
+                            )}
+
+                            <circle
+                              cx={cx}
+                              cy={cy}
+                              r={5}
+                              fill={
+                                payload.isToday
+                                  ? "#e36b9a"
+                                  : "#84b8f0"
+                              }
+                              filter={
+                                payload.isToday
+                                  ? "url(#scatterGlow)"
+                                  : undefined
+                              }
+                              style={{
+                                cursor: "pointer",
+                              }}
+                              onClick={(e) =>
+                                showPointCard(e, payload)
+                              }
+                            />
+                          </>
                         );
                       }}
                     />
