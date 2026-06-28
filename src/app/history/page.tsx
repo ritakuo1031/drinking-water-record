@@ -882,7 +882,7 @@ export default function HistoryPage() {
                                 r={6.2}
                                 fill="none"
                                 stroke="#F6C94C"
-                                strokeWidth={1.4}
+                                strokeWidth={1.8}
                               />
                             )}
 
