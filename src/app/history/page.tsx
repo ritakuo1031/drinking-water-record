@@ -881,7 +881,7 @@ export default function HistoryPage() {
                                 cy={cy}
                                 r={6.2}
                                 fill="none"
-                                stroke="#FFD966"
+                                stroke="#FFCD30"
                                 strokeWidth={2.2}
                               />
                             )}
