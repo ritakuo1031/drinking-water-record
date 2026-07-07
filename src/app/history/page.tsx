@@ -591,6 +591,14 @@ export default function HistoryPage() {
       dayIndex: tick,
     }));
 
+  console.log("dailyCounts =", dailyCounts);
+
+  console.log("days =", dailyCounts.length);
+  
+  console.log(
+    dailyCounts.map(item => item.date)
+  );
+
   const averageCount =
     dailyCounts.length > 0
       ? (
