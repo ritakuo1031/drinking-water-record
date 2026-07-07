@@ -591,30 +591,17 @@ export default function HistoryPage() {
       dayIndex: tick,
     }));
 
-  console.log("dailyCounts =", dailyCounts);
-
-  console.log("days =", dailyCounts.length);
-  
-  console.log(
-    dailyCounts.map(item => item.date)
-  );
-
   const averageCount =
     dailyCounts.length > 0
-      ? (
-          dailyCounts.reduce(
-            (sum, item) =>
-              sum + item.count,
-            0
-          ) / dailyCounts.length
-        ).toFixed(1)
-      : "0.0";
+      ? dailyCounts.reduce(
+          (sum, item) => sum + item.count,
+          0
+        ) / dailyCounts.length
+      : 0;
 
   const averageDisplay = showMl
-  ? Math.round(
-      Number(averageCount) * cupMlNumber
-    )
-  : averageCount;
+    ? (averageCount * cupMlNumber).toFixed(1)
+    : averageCount.toFixed(1);
 
   return (
     <main className={styles.page}>
