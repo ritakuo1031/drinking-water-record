@@ -600,7 +600,7 @@ export default function HistoryPage() {
       : 0;
 
   const averageDisplay = showMl
-    ? (averageCount * cupMlNumber).toFixed(1)
+    ? Math.round(averageCount * cupMlNumber)
     : averageCount.toFixed(1);
 
   return (
