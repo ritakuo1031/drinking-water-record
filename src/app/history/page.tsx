@@ -46,15 +46,31 @@ export default function HistoryPage() {
 
   const today = new Date();
 
-  const defaultEndDate = today
-    .toISOString()
-    .split("T")[0];
+  // 專門提供歷史紀錄預設日期使用（台北時區）
+  const taipeiToday = new Date(
+    new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Taipei",
+    })
+  );
 
-  const defaultStartDate = new Date(
-    today.getTime() - 6 * 24 * 60 * 60 * 1000
-  )
-    .toISOString()
-    .split("T")[0];
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
+  // 預設結束日：昨天（台北）
+  const defaultEnd = new Date(taipeiToday);
+  defaultEnd.setDate(defaultEnd.getDate() - 1);
+
+  // 預設開始日：前 7 天（台北）
+  const defaultStart = new Date(defaultEnd);
+  defaultStart.setDate(defaultStart.getDate() - 6);
+
+  const defaultStartDate = formatDate(defaultStart);
+  const defaultEndDate = formatDate(defaultEnd);
 
   const [startDate, setStartDate] =
     useState(defaultStartDate);
